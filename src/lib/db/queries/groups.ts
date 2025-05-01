@@ -211,8 +211,8 @@ export async function getAllGroupsForUser(
  */
 export async function getGroupDetails(groupId: string): Promise<{
   group: Group;
-  owners: { email: string; name: string | null }[];
-  members: { email: string; name: string | null }[];
+  owners: { email: string; name: string | null; image: string | null }[];
+  members: { email: string }[];
 } | null> {
   try {
     const groupQuery = db
@@ -232,12 +232,9 @@ export async function getGroupDetails(groupId: string): Promise<{
 
     const membersQuery = db
       .select({
-        email: users.email,
-        name: users.name,
-        image: users.image,
+        email: groupMembers.userEmail,
       })
       .from(groupMembers)
-      .innerJoin(users, eq(groupMembers.userEmail, users.email))
       .where(eq(groupMembers.groupId, groupId));
 
     const [[group], owners, members] = await Promise.all([

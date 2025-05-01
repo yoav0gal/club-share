@@ -1,5 +1,5 @@
 import { getContactByEmailAction } from "../actions";
-import { ContactDetails } from "./ContactDetails";
+import { ContactDetails } from "./contact-details";
 import { notFound } from "next/navigation";
 
 export default async function ContactDetailsPage({

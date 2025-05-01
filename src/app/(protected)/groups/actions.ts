@@ -4,14 +4,14 @@ import { z } from "zod";
 import { auth } from "@/app/(auth)/auth";
 import {
   createGroup,
-  updateGroup,
   deleteGroup,
   isGroupOwner,
   getAllGroupsForUser,
   getGroupDetails,
 } from "@/lib/db/queries/groups";
 import type { Group } from "@/lib/db/schemas/club-share";
-import { revalidatePath } from "next/cache";
+import { getAllContacts } from "@/lib/db/queries/contacts";
+import { redirect } from "next/navigation";
 
 export interface MutationActionState {
   status:
@@ -141,7 +141,8 @@ export async function updateGroupAction(
       };
     }
 
-    await updateGroup(groupId, name, ownerEmails, memberEmails);
+    await createGroup(name, ownerEmails, memberEmails);
+    await deleteGroup(groupId);
     return { status: "success", message: "Group updated successfully." };
   } catch (error) {
     console.error("Error updating group:", error);
@@ -216,8 +217,8 @@ export async function getAllGroupsAction(): Promise<Group[]> {
 
 export async function getGroupDetailsAction(groupId: string): Promise<{
   group: Group;
-  owners: { email: string; name: string | null }[];
-  members: { email: string; name: string | null }[];
+  owners: { email: string; name: string | null; image: string | null }[];
+  members: { email: string }[];
   isOwner: boolean;
 } | null> {
   const session = await auth();
@@ -229,9 +230,8 @@ export async function getGroupDetailsAction(groupId: string): Promise<{
 
   try {
     const details = await getGroupDetails(groupId);
-    if (!details) {
-      return null;
-    }
+
+    if (!details) return null;
 
     const isMember = details.members.some(
       (member) => member.email === userEmail
@@ -251,5 +251,47 @@ export async function getGroupDetailsAction(groupId: string): Promise<{
   } catch (error) {
     console.error(`Error fetching details for group ${groupId}:`, error);
     throw new Error("Failed to fetch group details.");
+  }
+}
+
+export async function groupEditDataAction(groupId: string) {
+  const session = await auth();
+
+  if (session == null || !session.user?.email) {
+    console.error("getContactByEmailAction: User not authenticated");
+    return null;
+  }
+
+  const userEmail = session.user.email;
+
+  try {
+    const contacts = await getAllContacts(session.user.email);
+    const details = await getGroupDetails(groupId);
+
+    if (!details) return null;
+
+    const isMember = details.members.some(
+      (member) => member.email === userEmail
+    );
+    if (!isMember) {
+      console.warn(
+        `User ${userEmail} attempted to access group ${groupId} they are not a member of.`
+      );
+      return null;
+    }
+
+    const markedContacts = contacts.map((contact) => ({
+      ...contact,
+      checked: details.members.some(
+        (member) => member.email === contact.contactEmail
+      ),
+    }));
+    return {
+      group: details,
+      contacts: markedContacts,
+    };
+  } catch (error) {
+    console.error(`Error getting edit data for group ${groupId}:`, error);
+    throw new Error("Failed to fetch group edit data.");
   }
 }

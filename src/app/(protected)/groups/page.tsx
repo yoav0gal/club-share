@@ -15,6 +15,5 @@ export default async function GroupsPage() {
   }
 
   const groups = await getAllGroupsForUser(userEmail);
-
   return <GroupsList groups={groups} />;
 }
