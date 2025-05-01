@@ -1,6 +1,6 @@
 {
-  "id": "7f41ae9c-818d-4d4b-9de7-4e7a8c9e4a83",
-  "prevId": "00000000-0000-0000-0000-000000000000",
+  "id": "3a07f6d4-65fa-4050-8575-c4ce34e6015e",
+  "prevId": "6d9dbdcc-040a-4620-959f-a99807d93b54",
   "version": "7",
   "dialect": "postgresql",
   "tables": {
@@ -395,19 +395,6 @@
           ],
           "onDelete": "cascade",
           "onUpdate": "no action"
-        },
-        "contacts_contact_email_users_email_fk": {
-          "name": "contacts_contact_email_users_email_fk",
-          "tableFrom": "contacts",
-          "tableTo": "users",
-          "columnsFrom": [
-            "contact_email"
-          ],
-          "columnsTo": [
-            "email"
-          ],
-          "onDelete": "cascade",
-          "onUpdate": "no action"
         }
       },
       "compositePrimaryKeys": {
@@ -459,19 +446,6 @@
           ],
           "columnsTo": [
             "id"
-          ],
-          "onDelete": "cascade",
-          "onUpdate": "no action"
-        },
-        "group_members_user_email_users_email_fk": {
-          "name": "group_members_user_email_users_email_fk",
-          "tableFrom": "group_members",
-          "tableTo": "users",
-          "columnsFrom": [
-            "user_email"
-          ],
-          "columnsTo": [
-            "email"
           ],
           "onDelete": "cascade",
           "onUpdate": "no action"
@@ -529,19 +503,6 @@
           ],
           "onDelete": "cascade",
           "onUpdate": "no action"
-        },
-        "group_owners_user_email_users_email_fk": {
-          "name": "group_owners_user_email_users_email_fk",
-          "tableFrom": "group_owners",
-          "tableTo": "users",
-          "columnsFrom": [
-            "user_email"
-          ],
-          "columnsTo": [
-            "email"
-          ],
-          "onDelete": "cascade",
-          "onUpdate": "no action"
         }
       },
       "compositePrimaryKeys": {
@@ -593,19 +554,6 @@
           ],
           "columnsTo": [
             "id"
-          ],
-          "onDelete": "cascade",
-          "onUpdate": "no action"
-        },
-        "group_shared_user_email_users_email_fk": {
-          "name": "group_shared_user_email_users_email_fk",
-          "tableFrom": "group_shared",
-          "tableTo": "users",
-          "columnsFrom": [
-            "user_email"
-          ],
-          "columnsTo": [
-            "email"
           ],
           "onDelete": "cascade",
           "onUpdate": "no action"

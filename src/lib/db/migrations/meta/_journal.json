@@ -5,8 +5,22 @@
     {
       "idx": 0,
       "version": "7",
-      "when": 1745606321195,
-      "tag": "0000_flimsy_sentry",
+      "when": 1746042656593,
+      "tag": "0000_shocking_crusher_hogan",
+      "breakpoints": true
+    },
+    {
+      "idx": 1,
+      "version": "7",
+      "when": 1746044066587,
+      "tag": "0001_salty_the_leader",
+      "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "7",
+      "when": 1746087517568,
+      "tag": "0002_tricky_magneto",
       "breakpoints": true
     }
   ]

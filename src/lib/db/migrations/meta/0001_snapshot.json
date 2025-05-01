@@ -1,6 +1,6 @@
 {
-  "id": "7f41ae9c-818d-4d4b-9de7-4e7a8c9e4a83",
-  "prevId": "00000000-0000-0000-0000-000000000000",
+  "id": "6d9dbdcc-040a-4620-959f-a99807d93b54",
+  "prevId": "7f41ae9c-818d-4d4b-9de7-4e7a8c9e4a83",
   "version": "7",
   "dialect": "postgresql",
   "tables": {
@@ -389,19 +389,6 @@
           "tableTo": "users",
           "columnsFrom": [
             "user_email"
-          ],
-          "columnsTo": [
-            "email"
-          ],
-          "onDelete": "cascade",
-          "onUpdate": "no action"
-        },
-        "contacts_contact_email_users_email_fk": {
-          "name": "contacts_contact_email_users_email_fk",
-          "tableFrom": "contacts",
-          "tableTo": "users",
-          "columnsFrom": [
-            "contact_email"
           ],
           "columnsTo": [
             "email"
