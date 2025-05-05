@@ -3,6 +3,7 @@
 import { eq, and } from "drizzle-orm";
 import { db } from "@/lib/db";
 import { contacts, type Contact } from "../schemas/club-share";
+import { users } from "../schemas/auth";
 
 /**
  * Creates a new contact for a user.
@@ -124,6 +125,35 @@ export async function getContactByEmail(
     return result[0];
   } catch (error) {
     console.error("Failed to get contact by email from database", error);
+    throw error;
+  }
+}
+
+export type ContactsForShare = {
+  displayName: string | null;
+  contactEmail: string;
+  image: string | null;
+};
+export async function getContactsForSharing(
+  userEmail: string
+): Promise<ContactsForShare[]> {
+  try {
+    const userContacts = await db
+      .select({
+        displayName: contacts.displayName,
+        contactEmail: contacts.contactEmail,
+        image: users.image,
+      })
+      .from(contacts)
+      .leftJoin(users, eq(contacts.contactEmail, users.email))
+      .where(eq(contacts.userEmail, userEmail));
+
+    return userContacts;
+  } catch (error) {
+    console.error(
+      "Failed to fetch groups and contacts for sharing in database",
+      error
+    );
     throw error;
   }
 }

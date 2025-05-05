@@ -4,7 +4,8 @@ import {
   pgTable,
   text,
   primaryKey,
-  jsonb,
+  // jsonb,
+  json,
   uuid,
 } from "drizzle-orm/pg-core";
 import { users } from "./auth";
@@ -12,7 +13,7 @@ import { users } from "./auth";
 export const clubs = pgTable("clubs", {
   id: uuid("id").defaultRandom().primaryKey(),
   name: text("name").notNull(),
-  details: jsonb("details").default({}).notNull(),
+  details: json("details").default({}).notNull().$type<Record<string, any>>(),
   createdAt: timestamp("created_at", { mode: "date" }).defaultNow().notNull(),
   updatedAt: timestamp("updated_at", { mode: "date" }).defaultNow().notNull(),
 });
@@ -41,9 +42,7 @@ export const clubMembers = pgTable(
     clubId: uuid("club_id")
       .notNull()
       .references(() => clubs.id, { onDelete: "cascade" }),
-    userEmail: text("user_email")
-      .notNull()
-      .references(() => users.email, { onDelete: "cascade" }),
+    userEmail: text("user_email").notNull(),
     createdAt: timestamp("created_at", { mode: "date" }).defaultNow().notNull(),
   },
   (t) => [primaryKey({ columns: [t.clubId, t.userEmail] })]

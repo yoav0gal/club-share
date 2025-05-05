@@ -1,12 +1,21 @@
-"use client";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Card, CardContent } from "@/components/ui/card";
 import { Book, PlusCircle } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { SearchBar } from "@/components/search-bar";
-import { useState } from "react";
+import Link from "next/link";
+import { getAllMemberClubsAction } from "./actions";
+import { ClubsListClient } from "./clubs-list";
+import type { ClubDetails } from "@/lib/db/queries/clubs";
 
-export default function ClubsPage() {
-  const [searchQuery, setSearchQuery] = useState("");
+export default async function ClubsPage() {
+  let clubs: ClubDetails[] = [];
+  let error = null;
+  try {
+    clubs = await getAllMemberClubsAction();
+    console.log("Fetched clubs:", clubs);
+  } catch (e) {
+    console.error("Failed to fetch member clubs:", e);
+    error = "Failed to load clubs. Please try again later.";
+  }
 
   return (
     <div className="container mx-auto py-6">
@@ -16,30 +25,24 @@ export default function ClubsPage() {
           <h1 className="text-2xl font-bold">Clubs</h1>
         </div>
 
-        <Button size="sm" className="gap-1">
-          <PlusCircle className="h-4 w-4" />
-          <span>New Club</span>
-        </Button>
+        <Link href="/clubs/new">
+          <Button size="sm" className="gap-1">
+            <PlusCircle className="h-4 w-4" />
+            <span>New Club</span>
+          </Button>
+        </Link>
       </div>
 
-      <div className="mb-6">
-        <SearchBar placeholder="Search clubs..." onChange={setSearchQuery} />
-      </div>
-
-      <Card>
-        <CardHeader>
-          <CardTitle>Accessible Clubs</CardTitle>
-        </CardHeader>
-        <CardContent>
-          <p className="text-muted-foreground">
-            View all the clubs you have access to through your contacts.
-          </p>
-
-          <div className="py-8 text-center text-muted-foreground">
-            No clubs available yet. Connect with friends to see their clubs.
-          </div>
-        </CardContent>
-      </Card>
+      {/* Render the client component, passing the fetched data */}
+      {error ? (
+        <Card>
+          <CardContent className="py-8 text-center text-destructive">
+            {error}
+          </CardContent>
+        </Card>
+      ) : (
+        <ClubsListClient initialClubs={clubs} />
+      )}
     </div>
   );
 }

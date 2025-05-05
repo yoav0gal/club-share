@@ -7,8 +7,11 @@ import {
   groupOwners,
   groupMembers,
   type Group,
+  contacts,
+  type Contact,
 } from "../schemas/club-share";
 import { users } from "../schemas/auth";
+import { type ContactsForShare, getContactsForSharing } from "./contacts";
 
 /**
  * Checks if a user is an owner of a specific group.
@@ -252,6 +255,56 @@ export async function getGroupDetails(groupId: string): Promise<{
     };
   } catch (error) {
     console.error("Failed to get group details from database", error);
+    throw error;
+  }
+}
+
+export type GroupsForShare = {
+  name: string;
+  members: string[];
+  size: number;
+};
+
+/**
+ * Fetches all groups owned by the user, including their members, and all.
+ * @param userEmail The email of the user.
+ * @returns A promise that resolves with an object containing lists of groups (with members) and contacts.
+ */
+export async function getGroupsForSharing(
+  userEmail: string
+): Promise<GroupsForShare[]> {
+  try {
+    const groupsOwenRows = await db
+      .select({ groupName: groups.name, memberEmail: groupMembers.userEmail })
+      .from(groupOwners)
+      .innerJoin(groupMembers, eq(groupOwners.groupId, groupMembers.groupId))
+      .innerJoin(groups, eq(groupMembers.groupId, groups.id))
+      .where(eq(groupOwners.userEmail, userEmail));
+
+    const groupsOwenDict = groupsOwenRows.reduce<
+      Record<string, { groupName: string; members: string[] }>
+    >((acc, row) => {
+      if (!acc[row.groupName]) {
+        acc[row.groupName] = { groupName: row.groupName, members: [] };
+      }
+      acc[row.groupName].members.push(row.memberEmail);
+      return acc;
+    }, {});
+
+    const owendGroups = Object.entries(groupsOwenDict).map(
+      ([groupName, group]) => ({
+        name: groupName,
+        members: group.members,
+        size: group.members.length,
+      })
+    );
+
+    return owendGroups;
+  } catch (error) {
+    console.error(
+      "Failed to fetch groups and contacts for sharing in database",
+      error
+    );
     throw error;
   }
 }

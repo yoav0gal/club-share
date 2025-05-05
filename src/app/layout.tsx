@@ -1,30 +1,30 @@
-import type { Metadata } from 'next';
-import { Geist } from 'next/font/google';
-import './globals.css';
-import { ThemeProvider } from '@/components/theme-provider';
-import { SessionProvider } from 'next-auth/react';
-import { Header } from '@/components/header';
-import { Toaster } from '@/components/ui/sonner';
+import type { Metadata } from "next";
+import { Geist } from "next/font/google";
+import "./globals.css";
+import { ThemeProvider } from "@/components/theme-provider";
+import { SessionProvider } from "next-auth/react";
+import { Header } from "@/components/header";
+import { Toaster } from "@/components/ui/sonner";
 
 const geistSans = Geist({
-  variable: '--font-geist-sans',
-  subsets: ['latin'],
+  variable: "--font-geist-sans",
+  subsets: ["latin"],
 });
 
 export const metadata: Metadata = {
-  title: 'ClubShare',
+  title: "ClubShare",
   icons: [
     {
-      rel: 'icon',
-      url: '/club-share-logo.svg',
-      media: '(prefers-color-scheme: light)',
-      type: 'image/svg+xml',
+      rel: "icon",
+      url: "/club-share-logo.svg",
+      media: "(prefers-color-scheme: light)",
+      type: "image/svg+xml",
     },
     {
-      rel: 'icon',
-      url: '/club-share-logo-dark.svg',
-      media: '(prefers-color-scheme: dark)',
-      type: 'image/svg+xml',
+      rel: "icon",
+      url: "/club-share-logo-dark.svg",
+      media: "(prefers-color-scheme: dark)",
+      type: "image/svg+xml",
     },
   ],
 };
