@@ -1,15 +1,15 @@
-"use server";
+'use server';
 
-import { eq, and, inArray, ne } from "drizzle-orm";
-import { db } from "@/lib/db";
+import { eq, and, inArray, ne } from 'drizzle-orm';
+import { db } from '@/lib/db';
 import {
   clubs,
   clubOwners,
   clubMembers,
   type Club,
   contacts,
-} from "../schemas/club-share";
-import { users } from "@/lib/db/schemas/auth";
+} from '../schemas/club-share';
+import { users } from '@/lib/db/schemas/auth';
 
 /**
  * Checks if a user is an owner of a specific club.
@@ -19,19 +19,19 @@ import { users } from "@/lib/db/schemas/auth";
  */
 export async function isClubOwner(
   userEmail: string,
-  clubId: string
+  clubId: string,
 ): Promise<boolean> {
   try {
     const result = await db
       .select()
       .from(clubOwners)
       .where(
-        and(eq(clubOwners.clubId, clubId), eq(clubOwners.userEmail, userEmail))
+        and(eq(clubOwners.clubId, clubId), eq(clubOwners.userEmail, userEmail)),
       )
       .limit(1);
     return result.length > 0;
   } catch (error) {
-    console.error("Failed to check club ownership in database", error);
+    console.error('Failed to check club ownership in database', error);
     throw error;
   }
 }
@@ -48,7 +48,7 @@ export async function createClub(
   name: string,
   ownerEmail: string,
   memberEmails: string[] = [],
-  details: Record<string, any> = {}
+  details: Record<string, string> = {},
 ): Promise<Club> {
   try {
     const [newClub] = await db
@@ -75,7 +75,7 @@ export async function createClub(
 
     return newClub;
   } catch (error) {
-    console.error("Failed to create club in database", error);
+    console.error('Failed to create club in database', error);
     throw error;
   }
 }
@@ -89,20 +89,20 @@ export async function createClub(
  */
 export async function deleteClub(
   clubId: string,
-  userEmail: string
+  userEmail: string,
 ): Promise<void> {
   try {
     const ownerCheck = await isClubOwner(userEmail, clubId);
     if (!ownerCheck) {
-      throw new Error("User is not authorized to delete this club.");
+      throw new Error('User is not authorized to delete this club.');
     }
     await db.delete(clubs).where(eq(clubs.id, clubId));
   } catch (error) {
-    console.error("Failed to delete club from database", error);
-    if (error instanceof Error && error.message.includes("authorized")) {
+    console.error('Failed to delete club from database', error);
+    if (error instanceof Error && error.message.includes('authorized')) {
       throw error;
     }
-    throw new Error("Failed to delete club.");
+    throw new Error('Failed to delete club.');
   }
 }
 
@@ -125,7 +125,7 @@ export async function getOwnedClubs(userEmail: string): Promise<Club[]> {
     const clubIds = ownedClubIds.map((c) => c.id);
     return await db.select().from(clubs).where(inArray(clubs.id, clubIds));
   } catch (error) {
-    console.error("Failed to get owned clubs for user from database", error);
+    console.error('Failed to get owned clubs for user from database', error);
     throw error;
   }
 }
@@ -151,7 +151,7 @@ export type ClubDetails = {
  * @returns A promise that resolves with an array of Club objects.
  */
 export async function getAllMemberClubs(
-  userEmail: string
+  userEmail: string,
 ): Promise<ClubDetails[]> {
   try {
     const memberClubsQuery = db
@@ -186,7 +186,7 @@ export async function getAllMemberClubs(
 
     return accesibleClubs;
   } catch (error) {
-    console.error("Failed to get all clubs for user from database", error);
+    console.error('Failed to get all clubs for user from database', error);
     throw error;
   }
 }
@@ -226,7 +226,7 @@ export async function getAllClubsForUser(userEmail: string): Promise<Club[]> {
 
     return await db.select().from(clubs).where(inArray(clubs.id, clubIds));
   } catch (error) {
-    console.error("Failed to get all clubs for user from database", error);
+    console.error('Failed to get all clubs for user from database', error);
     throw error;
   }
 }
@@ -245,7 +245,7 @@ export type ClubDetailsWithOwnership = {
  */
 export async function getClubDetailsById(
   clubId: string,
-  userEmail: string
+  userEmail: string,
 ): Promise<ClubDetailsWithOwnership | null> {
   try {
     const result = await db
@@ -272,7 +272,7 @@ export async function getClubDetailsById(
       isOwner,
     };
   } catch (error) {
-    console.error("Failed to get club details by ID from database", error);
+    console.error('Failed to get club details by ID from database', error);
     throw error;
   }
 }
@@ -305,8 +305,8 @@ export async function getClubEditDataById(clubId: string, userEmail: string) {
       .where(
         and(
           eq(clubMembers.clubId, clubId),
-          ne(clubMembers.userEmail, userEmail)
-        )
+          ne(clubMembers.userEmail, userEmail),
+        ),
       );
 
     const memberEmails = new Set(clubMembersEmailsResult.map((m) => m.email));
@@ -345,7 +345,7 @@ export async function getClubEditDataById(clubId: string, userEmail: string) {
     });
 
     const sharedWith: EditSharedWithItem[] = Array.from(
-      uniqueIndividuals.values()
+      uniqueIndividuals.values(),
     );
 
     return {
@@ -353,7 +353,7 @@ export async function getClubEditDataById(clubId: string, userEmail: string) {
       club,
     };
   } catch (error) {
-    console.error("Failed to get club details by ID from database", error);
+    console.error('Failed to get club details by ID from database', error);
     throw error;
   }
 }

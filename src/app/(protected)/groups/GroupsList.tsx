@@ -1,12 +1,12 @@
-"use client";
+'use client';
 
-import { useState } from "react";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { PlusCircle, Users } from "lucide-react";
-import { SearchBar } from "@/components/search-bar";
-import type { Group } from "@/lib/db/schemas/club-share";
-import { Button } from "@/components/ui/button";
-import Link from "next/link";
+import { useState } from 'react';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { PlusCircle, Users } from 'lucide-react';
+import { SearchBar } from '@/components/search-bar';
+import type { Group } from '@/lib/db/schemas/club-share';
+import { Button } from '@/components/ui/button';
+import Link from 'next/link';
 
 type GroupWithMembers = Group & {
   members: Array<{ email: string }>;
@@ -56,10 +56,10 @@ export function GroupCard({ id, name, members }: GroupWithMembers) {
 }
 
 export function GroupsList({ groups }: GroupsListProps) {
-  const [searchQuery, setSearchQuery] = useState("");
+  const [searchQuery, setSearchQuery] = useState('');
 
   const filteredGroups = groups.filter((group) =>
-    group.name.toLowerCase().includes(searchQuery.toLowerCase())
+    group.name.toLowerCase().includes(searchQuery.toLowerCase()),
   );
 
   return (

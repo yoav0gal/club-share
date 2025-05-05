@@ -1,16 +1,16 @@
-"use client";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { BookUser, PlusCircle } from "lucide-react";
-import { Button } from "@/components/ui/button";
-import { SearchBar } from "@/components/search-bar";
-import { useState, useEffect } from "react";
-import Link from "next/link";
-import { getOwnedClubsAction } from "../clubs/actions";
-import type { Club } from "@/lib/db/schemas/club-share";
-import { ClubCard } from "@/components/clubs/club-card";
+'use client';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { BookUser, PlusCircle } from 'lucide-react';
+import { Button } from '@/components/ui/button';
+import { SearchBar } from '@/components/search-bar';
+import { useState, useEffect } from 'react';
+import Link from 'next/link';
+import { getOwnedClubsAction } from '../clubs/actions';
+import type { Club } from '@/lib/db/schemas/club-share';
+import { ClubCard } from '@/components/clubs/club-card';
 
 export default function ManageClubsPage() {
-  const [searchQuery, setSearchQuery] = useState("");
+  const [searchQuery, setSearchQuery] = useState('');
   const [clubs, setClubs] = useState<Club[]>([]);
   const [isLoading, setIsLoading] = useState(true);
 
@@ -21,7 +21,7 @@ export default function ManageClubsPage() {
         const ownedClubs = await getOwnedClubsAction();
         setClubs(ownedClubs);
       } catch (error) {
-        console.error("Failed to fetch owned clubs:", error);
+        console.error('Failed to fetch owned clubs:', error);
       } finally {
         setIsLoading(false);
       }
@@ -30,7 +30,7 @@ export default function ManageClubsPage() {
   }, []);
 
   const filteredClubs = clubs.filter((club) =>
-    club.name.toLowerCase().includes(searchQuery.toLowerCase())
+    club.name.toLowerCase().includes(searchQuery.toLowerCase()),
   );
 
   return (
@@ -85,7 +85,7 @@ export default function ManageClubsPage() {
             </div>
           ) : (
             <div className="py-8 text-center text-muted-foreground">
-              You don't have any clubs yet. Create one to get started.
+              You don&apost have any clubs yet. Create one to get started.
             </div>
           )}
         </CardContent>

@@ -1,70 +1,69 @@
-"use server";
+'use server';
 
-import { z } from "zod";
-import { auth } from "@/app/(auth)/auth";
+import { z } from 'zod';
+import { auth } from '@/app/(auth)/auth';
 import {
   createGroup,
   deleteGroup,
   isGroupOwner,
   getAllGroupsForUser,
   getGroupDetails,
-} from "@/lib/db/queries/groups";
-import type { Group } from "@/lib/db/schemas/club-share";
-import { getAllContacts } from "@/lib/db/queries/contacts";
-import { redirect } from "next/navigation";
+} from '@/lib/db/queries/groups';
+import type { Group } from '@/lib/db/schemas/club-share';
+import { getAllContacts } from '@/lib/db/queries/contacts';
 
 export interface MutationActionState {
   status:
-    | "idle"
-    | "in_progress"
-    | "success"
-    | "failed"
-    | "invalid_data"
-    | "unauthorized";
+    | 'idle'
+    | 'in_progress'
+    | 'success'
+    | 'failed'
+    | 'invalid_data'
+    | 'unauthorized';
   message?: string;
 }
 
 const createGroupSchema = z.object({
-  name: z.string().min(1, "Group name cannot be empty"),
+  name: z.string().min(1, 'Group name cannot be empty'),
   ownerEmails: z
-    .array(z.email("Invalid owner email format"))
-    .min(1, "At least one owner is required"),
+    .array(z.email('Invalid owner email format'))
+    .min(1, 'At least one owner is required'),
   memberEmails: z
-    .array(z.email("Invalid member email format"))
+    .array(z.email('Invalid member email format'))
     .optional()
     .default([]),
 });
 
 const updateGroupSchema = z.object({
-  groupId: z.uuid("Invalid group ID format"),
-  name: z.string().min(1, "Group name cannot be empty"),
+  groupId: z.uuid('Invalid group ID format'),
+  name: z.string().min(1, 'Group name cannot be empty'),
   ownerEmails: z
-    .array(z.email("Invalid owner email format"))
-    .min(1, "At least one owner is required"),
+    .array(z.email('Invalid owner email format'))
+    .min(1, 'At least one owner is required'),
   memberEmails: z
-    .array(z.email("Invalid member email format"))
+    .array(z.email('Invalid member email format'))
     .optional()
     .default([]),
 });
 
 const deleteGroupSchema = z.object({
-  groupId: z.uuid("Invalid group ID format"),
+  groupId: z.uuid('Invalid group ID format'),
 });
 
 export async function newGroupAction(
   _: MutationActionState,
-  formData: FormData
+  formData: FormData,
 ): Promise<MutationActionState> {
   const session = await auth();
   if (!session?.user?.email) {
-    return { status: "failed", message: "Login to perform this action" };
+    return { status: 'failed', message: 'Login to perform this action' };
   }
   const userEmail = session.user.email;
 
   const rawData = {
-    name: formData.get("name"),
+    name: formData.get('name'),
     ownerEmails: [session?.user?.email],
-    memberEmails: formData.getAll("memberEmails"),
+    memberEmails: formData.getAll('memberEmails'),
   };
 
   if (!rawData.ownerEmails.includes(userEmail)) {
@@ -74,9 +73,9 @@ export async function newGroupAction(
   const validatedData = createGroupSchema.safeParse(rawData);
 
   if (!validatedData.success) {
-    console.error("Validation failed:", validatedData.error.flatten());
+    console.error('Validation failed:', validatedData.error.flatten());
     return {
-      status: "invalid_data",
+      status: 'invalid_data',
       message: `Invalid group data: 
       ${validatedData.error}
         "Unknown error"
@@ -88,41 +87,41 @@ export async function newGroupAction(
     await createGroup(
       validatedData.data.name,
       validatedData.data.ownerEmails,
-      validatedData.data.memberEmails
+      validatedData.data.memberEmails,
     );
-    return { status: "success", message: "Group created successfully." };
+    return { status: 'success', message: 'Group created successfully.' };
   } catch (error) {
-    console.error("Error creating group:", error);
+    console.error('Error creating group:', error);
     return {
-      status: "failed",
-      message: "Failed to create group. Please try again.",
+      status: 'failed',
+      message: 'Failed to create group. Please try again.',
     };
   }
 }
 
 export async function updateGroupAction(
   _: MutationActionState,
-  formData: FormData
+  formData: FormData,
 ): Promise<MutationActionState> {
   const session = await auth();
   if (!session?.user?.email) {
-    return { status: "failed", message: "Login to perform this action" };
+    return { status: 'failed', message: 'Login to perform this action' };
   }
   const userEmail = session.user.email;
 
   const rawData = {
-    groupId: formData.get("groupId"),
-    name: formData.get("name"),
-    ownerEmails: formData.getAll("ownerEmails"),
-    memberEmails: formData.getAll("memberEmails"),
+    groupId: formData.get('groupId'),
+    name: formData.get('name'),
+    ownerEmails: formData.getAll('ownerEmails'),
+    memberEmails: formData.getAll('memberEmails'),
   };
 
   const validatedData = updateGroupSchema.safeParse(rawData);
 
   if (!validatedData.success) {
-    console.error("Validation failed:", validatedData.error.flatten());
+    console.error('Validation failed:', validatedData.error.flatten());
     return {
-      status: "invalid_data",
+      status: 'invalid_data',
       message: `Invalid group data:
        ${validatedData.error}
         "Unknown error"
@@ -136,44 +135,44 @@ export async function updateGroupAction(
     const ownerCheck = await isGroupOwner(userEmail, groupId);
     if (!ownerCheck) {
       return {
-        status: "unauthorized",
-        message: "You do not have permission to edit this group.",
+        status: 'unauthorized',
+        message: 'You do not have permission to edit this group.',
       };
     }
 
     await createGroup(name, ownerEmails, memberEmails);
     await deleteGroup(groupId);
-    return { status: "success", message: "Group updated successfully." };
+    return { status: 'success', message: 'Group updated successfully.' };
   } catch (error) {
-    console.error("Error updating group:", error);
+    console.error('Error updating group:', error);
     return {
-      status: "failed",
-      message: "Failed to update group. Please try again.",
+      status: 'failed',
+      message: 'Failed to update group. Please try again.',
     };
   }
 }
 
 export async function deleteGroupAction(
   _: MutationActionState,
-  formData: FormData
+  formData: FormData,
 ): Promise<MutationActionState> {
   const session = await auth();
   if (!session?.user?.email) {
-    return { status: "failed", message: "Login to perform this action" };
+    return { status: 'failed', message: 'Login to perform this action' };
   }
   const userEmail = session.user.email;
 
   const validatedData = deleteGroupSchema.safeParse({
-    groupId: formData.get("groupId"),
+    groupId: formData.get('groupId'),
   });
 
   if (!validatedData.success) {
-    console.error("Validation failed:", validatedData.error.flatten());
+    console.error('Validation failed:', validatedData.error.flatten());
     return {
-      status: "invalid_data",
+      status: 'invalid_data',
       message: `Invalid group ID: ${
         validatedData.error.flatten().fieldErrors.groupId?.[0] ||
-        "Unknown error"
+        'Unknown error'
       }`,
     };
   }
@@ -184,18 +183,18 @@ export async function deleteGroupAction(
     const ownerCheck = await isGroupOwner(userEmail, groupId);
     if (!ownerCheck) {
       return {
-        status: "unauthorized",
-        message: "You do not have permission to delete this group.",
+        status: 'unauthorized',
+        message: 'You do not have permission to delete this group.',
       };
     }
 
     await deleteGroup(groupId);
-    return { status: "success", message: "Group deleted successfully." };
+    return { status: 'success', message: 'Group deleted successfully.' };
   } catch (error) {
-    console.error("Error deleting group:", error);
+    console.error('Error deleting group:', error);
     return {
-      status: "failed",
-      message: "Failed to delete group. Please try again.",
+      status: 'failed',
+      message: 'Failed to delete group. Please try again.',
     };
   }
 }
@@ -203,15 +202,15 @@ export async function deleteGroupAction(
 export async function getAllGroupsAction(): Promise<Group[]> {
   const session = await auth();
   if (!session?.user?.email) {
-    console.error("Attempted to get groups without session");
-    throw new Error("Login to view groups");
+    console.error('Attempted to get groups without session');
+    throw new Error('Login to view groups');
   }
 
   try {
     return await getAllGroupsForUser(session.user.email);
   } catch (error) {
-    console.error("Error fetching groups for user:", error);
-    throw new Error("Failed to fetch groups.");
+    console.error('Error fetching groups for user:', error);
+    throw new Error('Failed to fetch groups.');
   }
 }
 
@@ -223,8 +222,8 @@ export async function getGroupDetailsAction(groupId: string): Promise<{
 } | null> {
   const session = await auth();
   if (!session?.user?.email) {
-    console.error("Attempted to get group details without session");
-    throw new Error("Login to view group details");
+    console.error('Attempted to get group details without session');
+    throw new Error('Login to view group details');
   }
   const userEmail = session.user.email;
 
@@ -234,23 +233,23 @@ export async function getGroupDetailsAction(groupId: string): Promise<{
     if (!details) return null;
 
     const isMember = details.members.some(
-      (member) => member.email === userEmail
+      (member) => member.email === userEmail,
     );
     if (!isMember) {
       console.warn(
-        `User ${userEmail} attempted to access group ${groupId} they are not a member of.`
+        `User ${userEmail} attempted to access group ${groupId} they are not a member of.`,
       );
       return null;
     }
 
     const ownerCheck = details.owners.some(
-      (owner) => owner.email === userEmail
+      (owner) => owner.email === userEmail,
     );
 
     return { ...details, isOwner: ownerCheck };
   } catch (error) {
     console.error(`Error fetching details for group ${groupId}:`, error);
-    throw new Error("Failed to fetch group details.");
+    throw new Error('Failed to fetch group details.');
   }
 }
 
@@ -258,7 +257,7 @@ export async function groupEditDataAction(groupId: string) {
   const session = await auth();
 
   if (session == null || !session.user?.email) {
-    console.error("getContactByEmailAction: User not authenticated");
+    console.error('getContactByEmailAction: User not authenticated');
     return null;
   }
 
@@ -271,11 +270,11 @@ export async function groupEditDataAction(groupId: string) {
     if (!details) return null;
 
     const isMember = details.members.some(
-      (member) => member.email === userEmail
+      (member) => member.email === userEmail,
     );
     if (!isMember) {
       console.warn(
-        `User ${userEmail} attempted to access group ${groupId} they are not a member of.`
+        `User ${userEmail} attempted to access group ${groupId} they are not a member of.`,
       );
       return null;
     }
@@ -283,7 +282,7 @@ export async function groupEditDataAction(groupId: string) {
     const markedContacts = contacts.map((contact) => ({
       ...contact,
       checked: details.members.some(
-        (member) => member.email === contact.contactEmail
+        (member) => member.email === contact.contactEmail,
       ),
     }));
     return {
@@ -292,6 +291,6 @@ export async function groupEditDataAction(groupId: string) {
     };
   } catch (error) {
     console.error(`Error getting edit data for group ${groupId}:`, error);
-    throw new Error("Failed to fetch group edit data.");
+    throw new Error('Failed to fetch group edit data.');
   }
 }

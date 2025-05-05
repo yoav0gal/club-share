@@ -1,9 +1,9 @@
-"use server";
+'use server';
 
-import { eq, and } from "drizzle-orm";
-import { db } from "@/lib/db";
-import { contacts, type Contact } from "../schemas/club-share";
-import { users } from "../schemas/auth";
+import { eq, and } from 'drizzle-orm';
+import { db } from '@/lib/db';
+import { contacts, type Contact } from '../schemas/club-share';
+import { users } from '../schemas/auth';
 
 /**
  * Creates a new contact for a user.
@@ -15,7 +15,7 @@ import { users } from "../schemas/auth";
 export async function createContact(
   userEmail: string,
   contactEmail: string,
-  displayName: string
+  displayName: string,
 ): Promise<void> {
   try {
     await db.insert(contacts).values({
@@ -24,7 +24,7 @@ export async function createContact(
       displayName,
     });
   } catch (error) {
-    console.error("Failed to create contact in database", error);
+    console.error('Failed to create contact in database', error);
     throw error;
   }
 }
@@ -37,7 +37,7 @@ export async function createContact(
  */
 export async function deleteContact(
   userEmail: string,
-  contactEmail: string
+  contactEmail: string,
 ): Promise<void> {
   try {
     await db
@@ -45,11 +45,11 @@ export async function deleteContact(
       .where(
         and(
           eq(contacts.userEmail, userEmail),
-          eq(contacts.contactEmail, contactEmail)
-        )
+          eq(contacts.contactEmail, contactEmail),
+        ),
       );
   } catch (error) {
-    console.error("Failed to delete contact from database", error);
+    console.error('Failed to delete contact from database', error);
     throw error;
   }
 }
@@ -64,7 +64,7 @@ export async function deleteContact(
 export async function updateContact(
   userEmail: string,
   contactEmail: string,
-  newDisplayName: string | null
+  newDisplayName: string | null,
 ): Promise<void> {
   try {
     await db
@@ -73,11 +73,11 @@ export async function updateContact(
       .where(
         and(
           eq(contacts.userEmail, userEmail),
-          eq(contacts.contactEmail, contactEmail)
-        )
+          eq(contacts.contactEmail, contactEmail),
+        ),
       );
   } catch (error) {
-    console.error("Failed to update contact in database", error);
+    console.error('Failed to update contact in database', error);
     throw error;
   }
 }
@@ -88,7 +88,7 @@ export async function updateContact(
  * @returns A promise that resolves with an array of Contact objects.
  */
 export async function getAllContacts(
-  userEmail: string
+  userEmail: string,
 ): Promise<Array<Contact>> {
   try {
     return await db
@@ -96,7 +96,7 @@ export async function getAllContacts(
       .from(contacts)
       .where(eq(contacts.userEmail, userEmail));
   } catch (error) {
-    console.error("Failed to get contacts from database", error);
+    console.error('Failed to get contacts from database', error);
     throw error;
   }
 }
@@ -109,7 +109,7 @@ export async function getAllContacts(
  */
 export async function getContactByEmail(
   userEmail: string,
-  contactEmail: string
+  contactEmail: string,
 ): Promise<Contact | undefined> {
   try {
     const result = await db
@@ -118,13 +118,13 @@ export async function getContactByEmail(
       .where(
         and(
           eq(contacts.userEmail, userEmail),
-          eq(contacts.contactEmail, contactEmail)
-        )
+          eq(contacts.contactEmail, contactEmail),
+        ),
       )
       .limit(1);
     return result[0];
   } catch (error) {
-    console.error("Failed to get contact by email from database", error);
+    console.error('Failed to get contact by email from database', error);
     throw error;
   }
 }
@@ -135,7 +135,7 @@ export type ContactsForShare = {
   image: string | null;
 };
 export async function getContactsForSharing(
-  userEmail: string
+  userEmail: string,
 ): Promise<ContactsForShare[]> {
   try {
     const userContacts = await db
@@ -151,8 +151,8 @@ export async function getContactsForSharing(
     return userContacts;
   } catch (error) {
     console.error(
-      "Failed to fetch groups and contacts for sharing in database",
-      error
+      'Failed to fetch groups and contacts for sharing in database',
+      error,
     );
     throw error;
   }

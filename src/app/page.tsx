@@ -1,8 +1,8 @@
-import Link from "next/link";
-import Image from "next/image";
-import { Button } from "@/components/ui/button";
-import { Search, Users, Share2 } from "lucide-react";
-import { auth } from "@/app/(auth)/auth";
+import Link from 'next/link';
+import Image from 'next/image';
+import { Button } from '@/components/ui/button';
+import { Search, Users, Share2 } from 'lucide-react';
+import { auth } from '@/app/(auth)/auth';
 
 export default async function LandingPage() {
   const session = await auth();
@@ -28,12 +28,12 @@ export default async function LandingPage() {
               One place for all your memberships
             </p>
           </div>
-          <Link href={session ? "/clubs" : "/login"}>
+          <Link href={session ? '/clubs' : '/login'}>
             <Button
               size="lg"
               className="text-lg px-8 shadow-lg hover:shadow-xl transition-all duration-300 group"
             >
-              {session ? "To the app!" : " login"}
+              {session ? 'To the app!' : ' login'}
             </Button>
           </Link>
         </header>

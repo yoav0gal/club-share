@@ -50,7 +50,9 @@ export function PrivacyPolicyContent() {
         ratione voluptatem sequi nesciunt.
       </p>
 
-      <h2 className="text-2xl font-semibold mb-4">7. Children's Privacy</h2>
+      <h2 className="text-2xl font-semibold mb-4">
+        7. Children&apos;s Privacy
+      </h2>
       <p>
         Our Service does not address anyone under the age of 13. We do not
         knowingly collect personally identifiable information from children

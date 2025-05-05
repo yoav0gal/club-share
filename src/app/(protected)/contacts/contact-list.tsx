@@ -1,25 +1,25 @@
-"use client";
+'use client';
 
-import { useState } from "react";
-import { Card, CardContent } from "@/components/ui/card";
-import { SearchBar } from "@/components/search-bar";
-import { ContactItem } from "@/components/contact-item";
-import type { Contact } from "@/lib/db/schemas/club-share";
-import { Users, PlusCircle } from "lucide-react";
-import { Button } from "@/components/ui/button";
-import Link from "next/link";
+import { useState } from 'react';
+import { Card, CardContent } from '@/components/ui/card';
+import { SearchBar } from '@/components/search-bar';
+import { ContactItem } from '@/components/contact-item';
+import type { Contact } from '@/lib/db/schemas/club-share';
+import { Users, PlusCircle } from 'lucide-react';
+import { Button } from '@/components/ui/button';
+import Link from 'next/link';
 
 type ContactListProps = {
   contacts: Contact[];
 };
 
 export function ContactList({ contacts }: ContactListProps) {
-  const [searchQuery, setSearchQuery] = useState("");
+  const [searchQuery, setSearchQuery] = useState('');
 
   const filteredContacts = contacts.filter(
     (contact) =>
       contact.displayName?.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      contact.contactEmail.toLowerCase().includes(searchQuery.toLowerCase())
+      contact.contactEmail.toLowerCase().includes(searchQuery.toLowerCase()),
   );
 
   return (
@@ -53,8 +53,8 @@ export function ContactList({ contacts }: ContactListProps) {
           ) : (
             <div className="py-8 text-center text-muted-foreground">
               {contacts.length === 0
-                ? "No contacts yet. Add contacts to start sharing clubs."
-                : "No contacts match your search."}
+                ? 'No contacts yet. Add contacts to start sharing clubs.'
+                : 'No contacts match your search.'}
             </div>
           )}
         </CardContent>

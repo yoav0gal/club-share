@@ -1,6 +1,6 @@
-import { getContactByEmailAction } from "../actions";
-import { ContactDetails } from "./contact-details";
-import { notFound } from "next/navigation";
+import { getContactByEmailAction } from '../actions';
+import { ContactDetails } from './contact-details';
+import { notFound } from 'next/navigation';
 
 export default async function ContactDetailsPage({
   params,
@@ -9,7 +9,7 @@ export default async function ContactDetailsPage({
 }) {
   const contactEmail = Array.isArray(params.email)
     ? decodeURIComponent(params.email[0])
-    : decodeURIComponent(params.email ?? "");
+    : decodeURIComponent(params.email ?? '');
 
   const contact = await getContactByEmailAction(contactEmail);
 

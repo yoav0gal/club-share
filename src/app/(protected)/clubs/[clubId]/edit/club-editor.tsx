@@ -1,14 +1,15 @@
-"use client";
+'use client';
 
-import { useRouter, useParams } from "next/navigation";
-import { useState, useEffect } from "react";
-import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { ArrowLeft } from "lucide-react";
-import { Checkbox } from "@/components/ui/checkbox";
-import { Label } from "@/components/ui/label";
-import { toast } from "@/components/toast";
-import type { EditSharedWithItem } from "@/lib/db/queries/clubs"; // Updated type
+import { useRouter, useParams } from 'next/navigation';
+import { useState, useEffect } from 'react';
+import { Button } from '@/components/ui/button';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { ArrowLeft } from 'lucide-react';
+import { Checkbox } from '@/components/ui/checkbox';
+import { Label } from '@/components/ui/label';
+import { toast } from '@/components/toast';
+import type { EditSharedWithItem } from '@/lib/db/queries/clubs'; // Updated type
+import Link from 'next/link';
 
 // Define the prop type using the imported EditSharedWithItem
 type ClubEditorProps = {
@@ -21,7 +22,7 @@ export function ClubEditor({ sharedWith }: ClubEditorProps) {
   const params = useParams();
   const clubId = params.clubId as string;
   const [selectedMemberEmails, setSelectedMemberEmails] = useState<string[]>(
-    []
+    [],
   );
 
   useEffect(() => {
@@ -37,20 +38,20 @@ export function ClubEditor({ sharedWith }: ClubEditorProps) {
     setSelectedMemberEmails((prevSelected) =>
       prevSelected.includes(email)
         ? prevSelected.filter((e) => e !== email)
-        : [...prevSelected, email]
+        : [...prevSelected, email],
     );
   };
 
   const handleNext = () => {
     if (selectedMemberEmails.length === 0) {
       return toast({
-        type: "error",
-        description: "Please select at least one member",
+        type: 'error',
+        description: 'Please select at least one member',
       });
     }
     const searchParams = new URLSearchParams();
     selectedMemberEmails.forEach((email) => {
-      searchParams.append("memberEmails", email);
+      searchParams.append('memberEmails', email);
     });
 
     // Navigate to the club name edit page
@@ -78,10 +79,10 @@ export function ClubEditor({ sharedWith }: ClubEditorProps) {
             <div className="grid gap-4">
               {sharedWith.length === 0 ? (
                 <p>
-                  No contacts found.{" "}
-                  <a href="/contacts/new" className="underline">
+                  No contacts found.{' '}
+                  <Link href="/contacts/new" className="underline">
                     Add contacts
-                  </a>{" "}
+                  </Link>
                   first.
                 </p>
               ) : (

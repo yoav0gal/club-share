@@ -1,14 +1,14 @@
-"use client";
+'use client';
 
-import React, { useState, useEffect, useCallback } from "react";
-import { Input } from "@/components/ui/input";
-import { ScrollArea } from "@/components/ui/scroll-area";
-import { Search } from "lucide-react";
-import type { ContactsForShare } from "@/lib/db/queries/contacts";
-import type { GroupsForShare } from "@/lib/db/queries/groups";
-import { Button } from "@/components/ui/button";
-import { ContactShareListItem } from "./contact-share-item";
-import { GroupShareListItem } from "./group-share-iteam";
+import React, { useState, useEffect, useCallback } from 'react';
+import { Input } from '@/components/ui/input';
+import { ScrollArea } from '@/components/ui/scroll-area';
+import { Search } from 'lucide-react';
+import type { ContactsForShare } from '@/lib/db/queries/contacts';
+import type { GroupsForShare } from '@/lib/db/queries/groups';
+import { Button } from '@/components/ui/button';
+import { ContactShareListItem } from './contact-share-item';
+import { GroupShareListItem } from './group-share-iteam';
 
 interface ShareSelectorProps {
   contacts: ContactsForShare[];
@@ -18,7 +18,7 @@ interface ShareSelectorProps {
   onSelectionChange: (
     selectedContactEmails: string[],
     selectedGroupNames: string[],
-    allMemberEmails: string[]
+    allMemberEmails: string[],
   ) => void;
   onSubmit: () => void;
   isSubmitting?: boolean;
@@ -33,15 +33,15 @@ export function ShareSelector({
   onSubmit,
   isSubmitting = false,
 }: ShareSelectorProps) {
-  const [searchTerm, setSearchTerm] = useState("");
+  const [searchTerm, setSearchTerm] = useState('');
   const [selectedContacts, setSelectedContacts] = useState<Set<string>>(
-    new Set(initialSelectedContacts)
+    new Set(initialSelectedContacts),
   );
   const [selectedGroups, setSelectedGroups] = useState<Set<string>>(
-    new Set(initialSelectedGroups)
+    new Set(initialSelectedGroups),
   );
   const [allMemberEmails, setAllMemberEmails] = useState<Set<string>>(
-    new Set(initialSelectedContacts)
+    new Set(initialSelectedContacts),
   );
   const [groupMemberEmails, setGroupMemberEmails] = useState<
     Map<string, string[]>
@@ -74,7 +74,7 @@ export function ShareSelector({
     const newAllMemberEmails = new Set<string>(Array.from(selectedContacts));
 
     // Add all emails from selected groups
-    Array.from(groupMemberEmails.entries()).forEach(([_, emails]) => {
+    Array.from(groupMemberEmails.entries()).forEach(([, emails]) => {
       emails.forEach((email) => newAllMemberEmails.add(email));
     });
 
@@ -89,7 +89,7 @@ export function ShareSelector({
       onSelectionChange(
         Array.from(selectedContacts),
         Array.from(selectedGroups),
-        newEmailsArray
+        newEmailsArray,
       );
     }
   }, [
@@ -100,8 +100,8 @@ export function ShareSelector({
     onSelectionChange,
   ]);
 
-  const handleSelect = useCallback((id: string, type: "contact" | "group") => {
-    if (type === "contact") {
+  const handleSelect = useCallback((id: string, type: 'contact' | 'group') => {
+    if (type === 'contact') {
       setSelectedContacts((prev) => {
         const newSet = new Set(prev);
         if (newSet.has(id)) {
@@ -141,7 +141,7 @@ export function ShareSelector({
             disabled={isSubmitting}
             className="w-[30%]"
           >
-            {isSubmitting ? "Sharing..." : "Add and Share"}
+            {isSubmitting ? 'Sharing...' : 'Add and Share'}
           </Button>
         </div>
       </div>
@@ -162,7 +162,7 @@ export function ShareSelector({
               <h3 className="font-medium text-sm mb-2 px-2">Groups</h3>
               {groups
                 .filter((group) =>
-                  group.name.toLowerCase().includes(searchTerm.toLowerCase())
+                  group.name.toLowerCase().includes(searchTerm.toLowerCase()),
                 )
                 .map((group) => (
                   <GroupShareListItem
@@ -175,10 +175,10 @@ export function ShareSelector({
                 ))}
               {groups.length > 0 &&
                 groups.filter((group) =>
-                  group.name.toLowerCase().includes(searchTerm.toLowerCase())
+                  group.name.toLowerCase().includes(searchTerm.toLowerCase()),
                 ).length === 0 && (
                   <li className="text-center text-muted-foreground p-4">
-                    No groups found matching '{searchTerm}'.
+                    No groups found matching &apos{searchTerm}&apos.
                   </li>
                 )}
             </div>
@@ -192,7 +192,7 @@ export function ShareSelector({
                 .filter((contact) =>
                   (contact.displayName || contact.contactEmail)
                     .toLowerCase()
-                    .includes(searchTerm.toLowerCase())
+                    .includes(searchTerm.toLowerCase()),
                 )
                 .map((contact) => (
                   <ContactShareListItem
@@ -207,10 +207,10 @@ export function ShareSelector({
                 contacts.filter((contact) =>
                   (contact.displayName || contact.contactEmail)
                     .toLowerCase()
-                    .includes(searchTerm.toLowerCase())
+                    .includes(searchTerm.toLowerCase()),
                 ).length === 0 && (
                   <li className="text-center text-muted-foreground p-4">
-                    No contacts found matching '{searchTerm}'.
+                    No contacts found matching &apos{searchTerm}&apos.
                   </li>
                 )}
             </div>

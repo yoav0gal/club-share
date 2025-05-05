@@ -1,7 +1,7 @@
-import { auth } from "@/app/(auth)/auth";
-import { clubEditDataAction } from "../../actions";
-import type { ClubDetailPageProps } from "../page";
-import { ClubEditor } from "./club-editor";
+import { auth } from '@/app/(auth)/auth';
+import { clubEditDataAction } from '../../actions';
+import type { ClubDetailPageProps } from '../page';
+import { ClubEditor } from './club-editor';
 
 export default async function SelectClubMembersPage({
   params,
@@ -18,7 +18,7 @@ export default async function SelectClubMembersPage({
   }
 
   // Ensure params.clubId exists and is a string
-  const clubId = typeof params.clubId === "string" ? params.clubId : "";
+  const clubId = typeof params.clubId === 'string' ? params.clubId : '';
   if (!clubId) {
     return (
       <div className="text-center text-red-500 pt-12">Invalid Club ID.</div>
@@ -27,10 +27,10 @@ export default async function SelectClubMembersPage({
 
   const clubEditData = await clubEditDataAction(clubId);
 
-  if ("status" in clubEditData) {
+  if ('status' in clubEditData) {
     return (
       <div className="text-center text-red-500 pt-12">
-        Could not load club data or you don't have permission.
+        Could not load club data or you don&apos;t have permission.
       </div>
     );
   }

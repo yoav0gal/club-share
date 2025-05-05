@@ -1,5 +1,5 @@
-import { Search } from "lucide-react";
-import { Input } from "./ui/input";
+import { Search } from 'lucide-react';
+import { Input } from './ui/input';
 
 interface SearchBarProps {
   placeholder?: string;
@@ -8,9 +8,9 @@ interface SearchBarProps {
 }
 
 export function SearchBar({
-  placeholder = "Search...",
+  placeholder = 'Search...',
   onChange,
-  className = "",
+  className = '',
 }: SearchBarProps) {
   return (
     <div className={`relative flex-1 max-w-md ${className}`}>

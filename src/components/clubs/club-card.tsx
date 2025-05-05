@@ -1,7 +1,7 @@
-import Link from "next/link";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import type { ClubDetails } from "@/lib/db/queries/clubs";
-import { KeyIcon, MailIcon, PhoneIcon, UserIcon, InfoIcon } from "lucide-react"; // Import icons
+import Link from 'next/link';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import type { ClubDetails } from '@/lib/db/queries/clubs';
+import { KeyIcon, MailIcon, PhoneIcon, UserIcon, InfoIcon } from 'lucide-react'; // Import icons
 
 interface ClubCardProps {
   club: ClubDetails;
@@ -10,13 +10,13 @@ interface ClubCardProps {
 // Helper function to get icon based on detail type
 const getDetailIcon = (type: string) => {
   switch (type.toLowerCase()) {
-    case "password":
+    case 'password':
       return <KeyIcon className="w-4 h-4 mr-1 inline-block" />;
-    case "email":
+    case 'email':
       return <MailIcon className="w-4 h-4 mr-1 inline-block" />;
-    case "phone":
+    case 'phone':
       return <PhoneIcon className="w-4 h-4 mr-1 inline-block" />;
-    case "id":
+    case 'id':
       return <UserIcon className="w-4 h-4 mr-1 inline-block" />;
     default:
       return <InfoIcon className="w-4 h-4 mr-1 inline-block" />; // Generic icon for custom fields
@@ -24,7 +24,7 @@ const getDetailIcon = (type: string) => {
 };
 
 export function ClubCard({ club }: ClubCardProps) {
-  const detailPriority = ["password", "email", "phone", "id"];
+  const detailPriority = ['password', 'email', 'phone', 'id'];
   const detailsEntries = Object.entries(club.details || {});
 
   const sortedDetails = detailsEntries.sort(([keyA], [keyB]) => {

@@ -1,14 +1,14 @@
-"use client";
+'use client';
 
-import { useState } from "react";
-import { useRouter } from "next/navigation";
-import { useActionState } from "react";
-import { deleteGroupAction, type MutationActionState } from "../actions";
-import type { Group } from "@/lib/db/schemas/club-share";
-import { Card, CardContent, CardHeader } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
-import { ArrowLeft, Pencil, Trash2 } from "lucide-react";
-import { toast } from "@/components/toast";
+import { useState } from 'react';
+import { useRouter } from 'next/navigation';
+import { useActionState } from 'react';
+import { deleteGroupAction, type MutationActionState } from '../actions';
+import type { Group } from '@/lib/db/schemas/club-share';
+import { Card, CardContent, CardHeader } from '@/components/ui/card';
+import { Button } from '@/components/ui/button';
+import { ArrowLeft, Pencil, Trash2 } from 'lucide-react';
+import { toast } from '@/components/toast';
 import {
   AlertDialog,
   AlertDialogCancel,
@@ -18,9 +18,9 @@ import {
   AlertDialogHeader,
   AlertDialogTitle,
   AlertDialogTrigger,
-} from "@/components/ui/alert-dialog";
-import { SubmitButton } from "@/components/submit-button";
-import Link from "next/link";
+} from '@/components/ui/alert-dialog';
+import { SubmitButton } from '@/components/submit-button';
+import Link from 'next/link';
 
 type GroupWithMembers = Group & {
   members: Array<{ email: string }>;
@@ -37,21 +37,21 @@ export function GroupDetails({ group }: GroupDetailsProps) {
   const [deleteState, deleteFormAction] = useActionState<
     MutationActionState,
     FormData
-  >(deleteGroupAction, { status: "idle" });
+  >(deleteGroupAction, { status: 'idle' });
 
   const handleDelete = () => {
     setIsDeletePending(true);
     const formData = new FormData();
-    formData.append("groupId", group.id);
+    formData.append('groupId', group.id);
     deleteFormAction(formData);
   };
 
-  if (deleteState.status === "success") {
+  if (deleteState.status === 'success') {
     toast({
-      type: "success",
-      description: deleteState.message || "Group deleted successfully!",
+      type: 'success',
+      description: deleteState.message || 'Group deleted successfully!',
     });
-    router.push("/groups");
+    router.push('/groups');
     return null;
   }
 
@@ -100,7 +100,7 @@ export function GroupDetails({ group }: GroupDetailsProps) {
                     className="text-xs text-center truncate w-full"
                     title={member.email}
                   >
-                    {member.email.split("@")[0]}
+                    {member.email.split('@')[0]}
                   </span>
                 </div>
               ))}
@@ -133,7 +133,7 @@ function GroupDeleteButton({
           <AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
           <AlertDialogDescription>
             This action cannot be undone. This will permanently delete the group
-            '{group.name}'.
+            &apos;{group.name}&apos;.
           </AlertDialogDescription>
         </AlertDialogHeader>
         <AlertDialogFooter className="flex flex-col sm:flex-row gap-2 sm:gap-0">

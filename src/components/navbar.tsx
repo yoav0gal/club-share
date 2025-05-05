@@ -1,8 +1,8 @@
-"use client";
-import Link from "next/link";
-import { usePathname } from "next/navigation";
-import { Users, UserCog, Book, BookUser } from "lucide-react";
-import { cn } from "@/lib/utils";
+'use client';
+import Link from 'next/link';
+import { usePathname } from 'next/navigation';
+import { Users, UserCog, Book, BookUser } from 'lucide-react';
+import { cn } from '@/lib/utils';
 
 interface NavItemProps {
   href: string;
@@ -16,10 +16,10 @@ const NavItem = ({ href, icon, label, isActive }: NavItemProps) => {
     <Link
       href={href}
       className={cn(
-        "flex flex-col items-center justify-center gap-1 p-3 text-sm md:flex-row md:justify-start md:gap-3 md:px-4 md:py-3 transition-colors rounded-lg",
+        'flex flex-col items-center justify-center gap-1 p-3 text-sm md:flex-row md:justify-start md:gap-3 md:px-4 md:py-3 transition-colors rounded-lg',
         isActive
-          ? "bg-primary/10 text-primary"
-          : "text-muted-foreground hover:bg-primary/10 hover:text-primary"
+          ? 'bg-primary/10 text-primary'
+          : 'text-muted-foreground hover:bg-primary/10 hover:text-primary',
       )}
     >
       {icon}
@@ -33,24 +33,24 @@ export function Navbar() {
 
   const routes = [
     {
-      href: "/clubs",
+      href: '/clubs',
       icon: <Book className="h-5 w-5" />,
-      label: "Clubs",
+      label: 'Clubs',
     },
     {
-      href: "/manage-clubs",
+      href: '/manage-clubs',
       icon: <BookUser className="h-5 w-5" />,
-      label: "Manage Clubs",
+      label: 'Manage Clubs',
     },
     {
-      href: "/contacts",
+      href: '/contacts',
       icon: <Users className="h-5 w-5" />,
-      label: "Contacts",
+      label: 'Contacts',
     },
     {
-      href: "/groups",
+      href: '/groups',
       icon: <UserCog className="h-5 w-5" />,
-      label: "Groups",
+      label: 'Groups',
     },
   ];
 

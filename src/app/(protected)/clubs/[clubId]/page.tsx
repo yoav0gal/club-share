@@ -1,5 +1,5 @@
-import { getClubDetailsAction } from "../actions";
-import { ClubDetails } from "./club-details";
+import { getClubDetailsAction } from '../actions';
+import { ClubDetails } from './club-details';
 
 export interface ClubDetailPageProps {
   params: {
@@ -16,7 +16,7 @@ export default async function ClubDetailPage({ params }: ClubDetailPageProps) {
     return (
       <div className="container mx-auto py-6">
         <div className="text-center text-muted-foreground">
-          Club not found or you don't have access to it.
+          Club not found or you don&apos;t have access to it.
         </div>
       </div>
     );

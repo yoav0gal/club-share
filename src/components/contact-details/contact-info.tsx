@@ -1,5 +1,5 @@
-import { Avatar, AvatarFallback } from "@/components/ui/avatar";
-import { Input } from "@/components/ui/input";
+import { Avatar, AvatarFallback } from '@/components/ui/avatar';
+import { Input } from '@/components/ui/input';
 
 interface ContactInfoProps {
   contact: { contactEmail: string; displayName?: string };
@@ -16,7 +16,7 @@ export function ContactInfo({
 }: ContactInfoProps) {
   const initial = contact.displayName
     ? contact.displayName.charAt(0).toUpperCase()
-    : "?";
+    : '?';
 
   return (
     <div className="flex items-center space-x-4">
@@ -35,7 +35,7 @@ export function ContactInfo({
           />
         ) : (
           <p className="text-xl font-semibold">
-            {contact.displayName || "(No display name)"}
+            {contact.displayName || '(No display name)'}
           </p>
         )}
         <p className="text-sm text-muted-foreground">{contact.contactEmail}</p>

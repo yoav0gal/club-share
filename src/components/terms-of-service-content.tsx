@@ -10,9 +10,9 @@ export function TermsOfServiceContent() {
 
       <h2 className="text-2xl font-semibold mb-4">2. Use of Service</h2>
       <p>
-        Our service is provided "as is" and "as available." We reserve the right
-        to modify, suspend, or discontinue the service at any time without
-        notice.
+        Our service is provided &quot;as is&quot; and &quot;as available.&quot;
+        We reserve the right to modify, suspend, or discontinue the service at
+        any time without notice.
       </p>
 
       <h2 className="text-2xl font-semibold mb-4">3. User Accounts</h2>

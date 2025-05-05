@@ -1,8 +1,8 @@
-import { auth } from "@/app/(auth)/auth";
-import { getGroupDetailsAction } from "@/app/(protected)/groups/actions";
-import { GroupNameEditorForm } from "./group-name-editor-form";
-import type { GroupPageProps } from "../../page";
-import { redirect } from "next/navigation";
+import { auth } from '@/app/(auth)/auth';
+import { getGroupDetailsAction } from '@/app/(protected)/groups/actions';
+import { GroupNameEditorForm } from './group-name-editor-form';
+import type { GroupPageProps } from '../../page';
+import { redirect } from 'next/navigation';
 
 export default async function EditGroupNamePage({
   params,
@@ -22,9 +22,9 @@ export default async function EditGroupNamePage({
 
   if (!groupDetails || !groupDetails.isOwner) {
     console.error(
-      `EditGroupNamePage: Group ${groupId} not found or user ${session.user.email} is not owner.`
+      `EditGroupNamePage: Group ${groupId} not found or user ${session.user.email} is not owner.`,
     );
-    redirect("/groups");
+    redirect('/groups');
   }
 
   const awaitedMemberEmails = (await searchParams).memberEmails ?? [];

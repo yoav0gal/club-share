@@ -1,29 +1,29 @@
-"use client";
+'use client';
 
-import React from "react";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { CheckCircle2 } from "lucide-react";
-import type { ContactsForShare } from "@/lib/db/queries/contacts";
+import React from 'react';
+import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
+import { CheckCircle2 } from 'lucide-react';
+import type { ContactsForShare } from '@/lib/db/queries/contacts';
 
 interface ContactShareListItemProps {
   id: string;
   contact: ContactsForShare;
   isSelected: boolean;
-  onSelect: (id: string, type: "contact") => void;
+  onSelect: (id: string, type: 'contact') => void;
 }
 
 const getInitials = (name: string | null): string => {
-  if (!name) return "?";
-  const names = name.trim().split(" ");
+  if (!name) return '?';
+  const names = name.trim().split(' ');
   if (names.length === 1 && names[0].length > 0) {
     return names[0].charAt(0).toUpperCase();
   }
   if (names.length > 1) {
     return (
-      (names[0].charAt(0) || "") + (names[names.length - 1].charAt(0) || "")
+      (names[0].charAt(0) || '') + (names[names.length - 1].charAt(0) || '')
     ).toUpperCase();
   }
-  return "?";
+  return '?';
 };
 
 export function ContactShareListItem({
@@ -38,9 +38,9 @@ export function ContactShareListItem({
   return (
     <li
       className={`flex items-center p-2 hover:bg-accent rounded-md cursor-pointer relative mb-0.75 ${
-        isSelected ? "bg-accent/50" : ""
+        isSelected ? 'bg-accent/50' : ''
       }`}
-      onClick={() => onSelect(id, "contact")}
+      onClick={() => onSelect(id, 'contact')}
     >
       <div className="relative mr-3">
         <Avatar className="h-10 w-10">

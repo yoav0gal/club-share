@@ -1,19 +1,19 @@
-"use client";
+'use client';
 
-import { useState } from "react";
-import { SearchBar } from "@/components/search-bar";
-import type { ClubDetails } from "@/lib/db/queries/clubs";
-import { ClubCard } from "@/components/clubs/club-card";
+import { useState } from 'react';
+import { SearchBar } from '@/components/search-bar';
+import type { ClubDetails } from '@/lib/db/queries/clubs';
+import { ClubCard } from '@/components/clubs/club-card';
 
 interface ClubsListClientProps {
   initialClubs: ClubDetails[];
 }
 
 export function ClubsListClient({ initialClubs }: ClubsListClientProps) {
-  const [searchQuery, setSearchQuery] = useState("");
+  const [searchQuery, setSearchQuery] = useState('');
 
   const filteredClubs = initialClubs.filter((club) =>
-    club.name.toLowerCase().includes(searchQuery.toLowerCase())
+    club.name.toLowerCase().includes(searchQuery.toLowerCase()),
   );
 
   return (
@@ -32,8 +32,8 @@ export function ClubsListClient({ initialClubs }: ClubsListClientProps) {
       ) : (
         <div className="py-8 text-center text-muted-foreground">
           {searchQuery
-            ? "No clubs match your search."
-            : "No clubs available yet. Connect with friends or join clubs to see them here."}
+            ? 'No clubs match your search.'
+            : 'No clubs available yet. Connect with friends or join clubs to see them here.'}
         </div>
       )}
     </>

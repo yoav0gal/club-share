@@ -1,6 +1,6 @@
-import { auth } from "@/app/(auth)/auth";
-import { getAllContacts } from "@/lib/db/queries/contacts";
-import { ContactSelector } from "./ContactSelector";
+import { auth } from '@/app/(auth)/auth';
+import { getAllContacts } from '@/lib/db/queries/contacts';
+import { ContactSelector } from './ContactSelector';
 
 export default async function SelectContactsPage() {
   const session = await auth();

@@ -1,17 +1,14 @@
-"use server";
+'use server';
 
-import { eq, and, inArray } from "drizzle-orm";
-import { db } from "@/lib/db";
+import { eq, and, inArray } from 'drizzle-orm';
+import { db } from '@/lib/db';
 import {
   groups,
   groupOwners,
   groupMembers,
   type Group,
-  contacts,
-  type Contact,
-} from "../schemas/club-share";
-import { users } from "../schemas/auth";
-import { type ContactsForShare, getContactsForSharing } from "./contacts";
+} from '../schemas/club-share';
+import { users } from '../schemas/auth';
 
 /**
  * Checks if a user is an owner of a specific group.
@@ -21,7 +18,7 @@ import { type ContactsForShare, getContactsForSharing } from "./contacts";
  */
 export async function isGroupOwner(
   userEmail: string,
-  groupId: string
+  groupId: string,
 ): Promise<boolean> {
   try {
     const result = await db
@@ -30,13 +27,13 @@ export async function isGroupOwner(
       .where(
         and(
           eq(groupOwners.groupId, groupId),
-          eq(groupOwners.userEmail, userEmail)
-        )
+          eq(groupOwners.userEmail, userEmail),
+        ),
       )
       .limit(1);
     return result.length > 0;
   } catch (error) {
-    console.error("Failed to check group ownership in database", error);
+    console.error('Failed to check group ownership in database', error);
     throw error;
   }
 }
@@ -51,7 +48,7 @@ export async function isGroupOwner(
 export async function createGroup(
   name: string,
   ownerEmails: string[],
-  memberEmails: string[]
+  memberEmails: string[],
 ): Promise<string> {
   try {
     const [newGroup] = await db
@@ -80,7 +77,7 @@ export async function createGroup(
 
     return groupId;
   } catch (error) {
-    console.error("Failed to create group in database", error);
+    console.error('Failed to create group in database', error);
     throw error;
   }
 }
@@ -98,7 +95,7 @@ export async function updateGroup(
   groupId: string,
   name: string,
   ownerEmails: string[],
-  memberEmails: string[]
+  memberEmails: string[],
 ): Promise<void> {
   try {
     await db.transaction(async (tx) => {
@@ -128,7 +125,7 @@ export async function updateGroup(
       }
     });
   } catch (error) {
-    console.error("Failed to update group in database", error);
+    console.error('Failed to update group in database', error);
     throw error;
   }
 }
@@ -144,7 +141,7 @@ export async function deleteGroup(groupId: string): Promise<void> {
     // Cascade delete should handle owners and members due to schema constraints
     await db.delete(groups).where(eq(groups.id, groupId));
   } catch (error) {
-    console.error("Failed to delete group from database", error);
+    console.error('Failed to delete group from database', error);
     throw error;
   }
 }
@@ -155,7 +152,7 @@ export async function deleteGroup(groupId: string): Promise<void> {
  * @returns A promise that resolves with an array of Group objects.
  */
 export async function getAllGroupsForUser(
-  userEmail: string
+  userEmail: string,
 ): Promise<(Group & { members: Array<{ email: string }> })[]> {
   try {
     const ownedGroupsQuery = db
@@ -197,12 +194,12 @@ export async function getAllGroupsForUser(
           .from(groupMembers)
           .where(eq(groupMembers.groupId, group.id));
         return { ...group, members };
-      })
+      }),
     );
 
     return groupsWithMembers;
   } catch (error) {
-    console.error("Failed to get groups for user from database", error);
+    console.error('Failed to get groups for user from database', error);
     throw error;
   }
 }
@@ -254,7 +251,7 @@ export async function getGroupDetails(groupId: string): Promise<{
       members,
     };
   } catch (error) {
-    console.error("Failed to get group details from database", error);
+    console.error('Failed to get group details from database', error);
     throw error;
   }
 }
@@ -271,7 +268,7 @@ export type GroupsForShare = {
  * @returns A promise that resolves with an object containing lists of groups (with members) and contacts.
  */
 export async function getGroupsForSharing(
-  userEmail: string
+  userEmail: string,
 ): Promise<GroupsForShare[]> {
   try {
     const groupsOwenRows = await db
@@ -296,14 +293,14 @@ export async function getGroupsForSharing(
         name: groupName,
         members: group.members,
         size: group.members.length,
-      })
+      }),
     );
 
     return owendGroups;
   } catch (error) {
     console.error(
-      "Failed to fetch groups and contacts for sharing in database",
-      error
+      'Failed to fetch groups and contacts for sharing in database',
+      error,
     );
     throw error;
   }

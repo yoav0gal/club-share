@@ -1,8 +1,8 @@
-import { auth } from "@/app/(auth)/auth";
-import { GroupEditor } from "./group-editor";
-import { groupEditDataAction } from "../../actions";
-import type { GroupPageProps } from "../page";
-import type { ContactWithChecked } from "./group-editor";
+import { auth } from '@/app/(auth)/auth';
+import { GroupEditor } from './group-editor';
+import { groupEditDataAction } from '../../actions';
+import type { GroupPageProps } from '../page';
+import type { ContactWithChecked } from './group-editor';
 
 export default async function SelectContactsPage({ params }: GroupPageProps) {
   const session = await auth();

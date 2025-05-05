@@ -1,7 +1,7 @@
-"use client";
-import { useSession, signIn, signOut } from "next-auth/react";
-import { useTheme } from "next-themes";
-import { Button } from "@/components/ui/button";
+'use client';
+import { useSession, signIn, signOut } from 'next-auth/react';
+import { useTheme } from 'next-themes';
+import { Button } from '@/components/ui/button';
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -9,10 +9,10 @@ import {
   DropdownMenuLabel,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { LogIn, LogOut, Moon, Sun } from "lucide-react";
-import { useEffect } from "react";
+} from '@/components/ui/dropdown-menu';
+import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
+import { LogIn, LogOut, Moon, Sun } from 'lucide-react';
+import { useEffect } from 'react';
 
 export function UserNav() {
   const { data: session, update: updateSession } = useSession();
@@ -20,14 +20,14 @@ export function UserNav() {
 
   useEffect(() => {
     updateSession();
-  }, []);
+  }, [updateSession]);
 
   const getInitials = (name?: string | null) => {
-    if (!name) return "?";
+    if (!name) return '?';
     return name
-      .split(" ")
+      .split(' ')
       .map((n) => n[0])
-      .join("");
+      .join('');
   };
 
   if (!session) {
@@ -50,7 +50,7 @@ export function UserNav() {
           <Avatar className="h-8 w-8">
             <AvatarImage
               src={session.user?.image ?? undefined}
-              alt={session.user?.name ?? "User"}
+              alt={session.user?.name ?? 'User'}
             />
             <AvatarFallback>{getInitials(session.user?.name)}</AvatarFallback>
           </Avatar>
@@ -71,27 +71,27 @@ export function UserNav() {
         <DropdownMenuLabel>Theme</DropdownMenuLabel>
         <div className="flex justify-around px-1 py-1">
           <Button
-            variant={theme === "light" ? "secondary" : "ghost"}
+            variant={theme === 'light' ? 'secondary' : 'ghost'}
             size="icon"
-            onClick={() => setTheme("light")}
+            onClick={() => setTheme('light')}
             className="rounded-full"
           >
             <Sun className="h-[1.2rem] w-[1.2rem]" />
             <span className="sr-only">Light</span>
           </Button>
           <Button
-            variant={theme === "dark" ? "secondary" : "ghost"}
+            variant={theme === 'dark' ? 'secondary' : 'ghost'}
             size="icon"
-            onClick={() => setTheme("dark")}
+            onClick={() => setTheme('dark')}
             className="rounded-full"
           >
             <Moon className="h-[1.2rem] w-[1.2rem]" />
             <span className="sr-only">Dark</span>
           </Button>
           <Button
-            variant={theme === "system" ? "secondary" : "ghost"}
+            variant={theme === 'system' ? 'secondary' : 'ghost'}
             size="icon"
-            onClick={() => setTheme("system")}
+            onClick={() => setTheme('system')}
             className="rounded-full"
           >
             <svg
@@ -104,9 +104,9 @@ export function UserNav() {
               strokeLinejoin="round"
               className="h-[1.2rem] w-[1.2rem]"
             >
-              <rect x="2" y="3" width="20" height="14" rx="2" ry="2"></rect>
-              <line x1="8" y1="21" x2="16" y2="21"></line>
-              <line x1="12" y1="17" x2="12" y2="21"></line>
+              <rect x="2" y="3" width="20" height="14" rx="2" ry="2" />
+              <line x1="8" y1="21" x2="16" y2="21" />
+              <line x1="12" y1="17" x2="12" y2="21" />
             </svg>
             <span className="sr-only">System</span>
           </Button>

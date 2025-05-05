@@ -7,10 +7,10 @@ import {
   AlertDialogHeader,
   AlertDialogTitle,
   AlertDialogTrigger,
-} from "@/components/ui/alert-dialog";
-import { Button } from "@/components/ui/button";
-import { SubmitButton } from "@/components/submit-button";
-import { Trash2 } from "lucide-react";
+} from '@/components/ui/alert-dialog';
+import { Button } from '@/components/ui/button';
+import { SubmitButton } from '@/components/submit-button';
+import { Trash2 } from 'lucide-react';
 
 interface DeleteContactDialogProps {
   contact: { contactEmail: string; displayName?: string };
@@ -35,7 +35,7 @@ export function DeleteContactDialog({
           <AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
           <AlertDialogDescription>
             This action cannot be undone. This will permanently delete the
-            contact '{contact.displayName || contact.contactEmail}'.
+            contact &apos;{contact.displayName || contact.contactEmail}&apos;.
           </AlertDialogDescription>
         </AlertDialogHeader>
         <AlertDialogFooter className="flex flex-col sm:flex-row gap-2 sm:gap-0">

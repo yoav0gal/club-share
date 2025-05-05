@@ -1,4 +1,4 @@
-import type { InferSelectModel } from "drizzle-orm";
+import type { InferSelectModel } from 'drizzle-orm';
 import {
   timestamp,
   pgTable,
@@ -6,42 +6,42 @@ import {
   primaryKey,
   integer,
   index,
-} from "drizzle-orm/pg-core";
-import type { AdapterAccountType } from "next-auth/adapters";
+} from 'drizzle-orm/pg-core';
+import type { AdapterAccountType } from 'next-auth/adapters';
 
 export const users = pgTable(
-  "users",
+  'users',
   {
-    id: text("id")
+    id: text('id')
       .unique()
       .$defaultFn(() => crypto.randomUUID()),
-    name: text("name"),
-    password: text("password"),
-    email: text("email").primaryKey().notNull(),
-    emailVerified: timestamp("emailVerified", { mode: "date" }),
-    image: text("image"),
+    name: text('name'),
+    password: text('password'),
+    email: text('email').primaryKey().notNull(),
+    emailVerified: timestamp('emailVerified', { mode: 'date' }),
+    image: text('image'),
   },
-  (user) => [index("id_idx").on(user.id)]
+  (user) => [index('id_idx').on(user.id)],
 );
 
 export type User = InferSelectModel<typeof users>;
 
 export const accounts = pgTable(
-  "accounts",
+  'accounts',
   {
-    userId: text("userId")
+    userId: text('userId')
       .notNull()
-      .references(() => users.id, { onDelete: "cascade" }),
-    type: text("type").$type<AdapterAccountType>().notNull(),
-    provider: text("provider").notNull(),
-    providerAccountId: text("providerAccountId").notNull(),
-    refresh_token: text("refresh_token"),
-    access_token: text("access_token"),
-    expires_at: integer("expires_at"),
-    token_type: text("token_type"),
-    scope: text("scope"),
-    id_token: text("id_token"),
-    session_state: text("session_state"),
+      .references(() => users.id, { onDelete: 'cascade' }),
+    type: text('type').$type<AdapterAccountType>().notNull(),
+    provider: text('provider').notNull(),
+    providerAccountId: text('providerAccountId').notNull(),
+    refresh_token: text('refresh_token'),
+    access_token: text('access_token'),
+    expires_at: integer('expires_at'),
+    token_type: text('token_type'),
+    scope: text('scope'),
+    id_token: text('id_token'),
+    session_state: text('session_state'),
   },
   (account) => [
     {
@@ -49,7 +49,7 @@ export const accounts = pgTable(
         columns: [account.provider, account.providerAccountId],
       }),
     },
-  ]
+  ],
 );
 
 export type Account = InferSelectModel<typeof accounts>;

@@ -10,7 +10,10 @@ export function PolicysFooter() {
         title="Terms of Service"
         linkHref="/terms"
         trigger={
-          <button className="underline underline-offset-4 hover:text-primary">
+          <button
+            className="underline underline-offset-4 hover:text-primary"
+            type="button"
+          >
             Terms of Service
           </button>
         }
@@ -21,7 +24,10 @@ export function PolicysFooter() {
         title="Privacy Policy"
         linkHref="/privacy"
         trigger={
-          <button className="underline underline-offset-4 hover:text-primary">
+          <button
+            className="underline underline-offset-4 hover:text-primary"
+            type="button"
+          >
             Privacy Policy
           </button>
         }

@@ -1,11 +1,11 @@
-import { cn } from "@/lib/utils";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Input } from "./ui/input";
-import { Label } from "./ui/label";
-import Form from "next/form";
-import { Button } from "./ui/button";
-import { ArrowLeft } from "lucide-react";
-import { useRouter } from "next/navigation";
+import { cn } from '@/lib/utils';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Input } from './ui/input';
+import { Label } from './ui/label';
+import Form from 'next/form';
+import { Button } from './ui/button';
+import { ArrowLeft } from 'lucide-react';
+import { useRouter } from 'next/navigation';
 
 interface ContactData {
   firstName?: string;
@@ -25,7 +25,7 @@ export function ContactForm({
   defaultValues = {},
   className,
   fieldErrors,
-  title = "Contact Details",
+  title = 'Contact Details',
   ...props
 }: {
   action: NonNullable<
@@ -40,7 +40,7 @@ export function ContactForm({
   const router = useRouter();
 
   return (
-    <div className={cn("flex flex-col gap-6", className)} {...props}>
+    <div className={cn('flex flex-col gap-6', className)} {...props}>
       <Button variant="ghost" size="icon" onClick={() => router.back()}>
         <ArrowLeft className="h-5 w-5" />
         <span className="sr-only">Back</span>

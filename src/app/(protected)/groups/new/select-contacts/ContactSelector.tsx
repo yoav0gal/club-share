@@ -1,13 +1,14 @@
-"use client";
+'use client';
 
-import { useRouter } from "next/navigation";
-import { useState } from "react";
-import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { ArrowLeft } from "lucide-react";
-import { Checkbox } from "@/components/ui/checkbox";
-import { Label } from "@/components/ui/label";
-import type { Contact } from "@/lib/db/schemas/club-share";
+import { useRouter } from 'next/navigation';
+import { useState } from 'react';
+import { Button } from '@/components/ui/button';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { ArrowLeft } from 'lucide-react';
+import { Checkbox } from '@/components/ui/checkbox';
+import { Label } from '@/components/ui/label';
+import type { Contact } from '@/lib/db/schemas/club-share';
+import Link from 'next/link';
 
 type ContactSelectorProps = {
   contacts: Contact[];
@@ -16,25 +17,25 @@ type ContactSelectorProps = {
 export function ContactSelector({ contacts }: ContactSelectorProps) {
   const router = useRouter();
   const [selectedMemberEmails, setSelectedMemberEmails] = useState<string[]>(
-    []
+    [],
   );
 
   const handleMemberSelectionChange = (contactEmail: string) => {
     setSelectedMemberEmails((prevSelected) =>
       prevSelected.includes(contactEmail)
         ? prevSelected.filter((email) => email !== contactEmail)
-        : [...prevSelected, contactEmail]
+        : [...prevSelected, contactEmail],
     );
   };
 
   const handleNext = () => {
     if (selectedMemberEmails.length === 0) {
-      alert("Please select at least one contact");
+      alert('Please select at least one contact');
       return;
     }
     const searchParams = new URLSearchParams();
     selectedMemberEmails.forEach((email) => {
-      searchParams.append("memberEmails", email);
+      searchParams.append('memberEmails', email);
     });
     router.push(`/groups/new?${searchParams.toString()}`);
   };
@@ -45,7 +46,7 @@ export function ContactSelector({ contacts }: ContactSelectorProps) {
         <Button
           variant="ghost"
           size="icon"
-          onClick={() => router.push("/groups")}
+          onClick={() => router.push('/groups')}
           className="mb-6"
         >
           <ArrowLeft className="h-5 w-5" />
@@ -60,10 +61,10 @@ export function ContactSelector({ contacts }: ContactSelectorProps) {
             <div className="grid gap-4">
               {contacts.length === 0 ? (
                 <p>
-                  No contacts found.{" "}
-                  <a href="/contacts/new" className="underline">
+                  No contacts found.{' '}
+                  <Link href="/contacts/new" className="underline">
                     Add contacts
-                  </a>{" "}
+                  </Link>{' '}
                   first.
                 </p>
               ) : (
@@ -76,7 +77,7 @@ export function ContactSelector({ contacts }: ContactSelectorProps) {
                       <Checkbox
                         id={`member-${contact.contactEmail}`}
                         checked={selectedMemberEmails.includes(
-                          contact.contactEmail
+                          contact.contactEmail,
                         )}
                         onCheckedChange={() =>
                           handleMemberSelectionChange(contact.contactEmail)

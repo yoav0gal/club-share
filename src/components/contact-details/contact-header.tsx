@@ -1,8 +1,8 @@
-import { Button } from "@/components/ui/button";
-import { CardTitle } from "@/components/ui/card";
-import { Pencil, Save, X } from "lucide-react";
-import { SubmitButton } from "@/components/submit-button";
-import { DeleteContactDialog } from "./delete-contact-dialog";
+import { Button } from '@/components/ui/button';
+import { CardTitle } from '@/components/ui/card';
+import { Pencil, Save, X } from 'lucide-react';
+import { SubmitButton } from '@/components/submit-button';
+import { DeleteContactDialog } from './delete-contact-dialog';
 
 interface ContactHeaderProps {
   isEditing: boolean;

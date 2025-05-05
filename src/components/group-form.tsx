@@ -1,12 +1,12 @@
-"use client";
+'use client';
 
-import { cn } from "@/lib/utils";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Button } from "./ui/button";
-import { ArrowLeft } from "lucide-react";
-import { useRouter, useSearchParams } from "next/navigation";
-import { Input } from "./ui/input";
-import Form from "next/form";
+import { cn } from '@/lib/utils';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Button } from './ui/button';
+import { ArrowLeft } from 'lucide-react';
+import { useRouter, useSearchParams } from 'next/navigation';
+import { Input } from './ui/input';
+import Form from 'next/form';
 
 interface GroupData {
   name?: string;
@@ -23,7 +23,7 @@ export function GroupForm({
   defaultValues = {},
   className,
   fieldErrors,
-  title = "Group Details",
+  title = 'Group Details',
   ...props
 }: {
   action: NonNullable<
@@ -37,25 +37,25 @@ export function GroupForm({
 }) {
   const router = useRouter();
   const searchParams = useSearchParams();
-  const memberEmails = searchParams.getAll("memberEmails");
+  const memberEmails = searchParams.getAll('memberEmails');
 
   const handleFormSubmit = (formData: FormData) => {
     memberEmails.forEach((email) => {
-      formData.append("memberEmails", email);
+      formData.append('memberEmails', email);
     });
-    if (typeof action === "function") {
+    if (typeof action === 'function') {
       action(formData);
     } else {
-      console.warn("Form action is not a function.");
+      console.warn('Form action is not a function.');
     }
   };
 
   return (
-    <div className={cn("flex flex-col gap-6", className)} {...props}>
+    <div className={cn('flex flex-col gap-6', className)} {...props}>
       <Button
         variant="ghost"
         size="icon"
-        onClick={() => router.push("/groups/new/select-contacts")}
+        onClick={() => router.push('/groups/new/select-contacts')}
         className="mb-6"
       >
         <ArrowLeft className="h-5 w-5" />
@@ -107,7 +107,7 @@ export function GroupForm({
                         className="text-xs text-center truncate w-full"
                         title={email}
                       >
-                        {email.split("@")[0]}
+                        {email.split('@')[0]}
                       </span>
                     </div>
                   ))}

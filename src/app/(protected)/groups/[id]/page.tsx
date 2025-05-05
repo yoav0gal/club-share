@@ -1,6 +1,6 @@
-import type { Group } from "@/lib/db/schemas/club-share";
-import { getGroupDetailsAction } from "../actions";
-import { GroupDetails } from "./group-details";
+import type { Group } from '@/lib/db/schemas/club-share';
+import { getGroupDetailsAction } from '../actions';
+import { GroupDetails } from './group-details';
 
 export interface GroupPageProps {
   params: {
@@ -15,7 +15,7 @@ export default async function GroupPage({ params }: GroupPageProps) {
     return (
       <div className="container mx-auto py-6">
         <div className="text-center text-muted-foreground">
-          Group not found or you don't have access to it.
+          Group not found or you don&apos;t have access to it.
         </div>
       </div>
     );

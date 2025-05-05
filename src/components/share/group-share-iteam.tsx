@@ -1,15 +1,15 @@
-"use client";
+'use client';
 
-import React from "react";
-import { Avatar, AvatarFallback } from "@/components/ui/avatar";
-import { CheckCircle2, Users } from "lucide-react";
-import type { GroupsForShare } from "@/lib/db/queries/groups";
+import React from 'react';
+import { Avatar, AvatarFallback } from '@/components/ui/avatar';
+import { CheckCircle2, Users } from 'lucide-react';
+import type { GroupsForShare } from '@/lib/db/queries/groups';
 
 interface GroupShareListItemProps {
   id: string;
   group: GroupsForShare;
   isSelected: boolean;
-  onSelect: (id: string, type: "group") => void;
+  onSelect: (id: string, type: 'group') => void;
 }
 
 export function GroupShareListItem({
@@ -21,9 +21,9 @@ export function GroupShareListItem({
   return (
     <li
       className={`flex items-center p-2 hover:bg-accent rounded-md cursor-pointer relative mb-0.75 ${
-        isSelected ? "bg-accent/50" : ""
+        isSelected ? 'bg-accent/50' : ''
       }`}
-      onClick={() => onSelect(id, "group")}
+      onClick={() => onSelect(id, 'group')}
     >
       <div className="relative mr-3">
         <Avatar className="h-10 w-10">
@@ -40,7 +40,7 @@ export function GroupShareListItem({
       <div className="flex-grow truncate">
         <span className="block text-sm font-medium">{group.name}</span>
         <span className="block text-xs text-muted-foreground">
-          {group.size} member{group.size !== 1 ? "s" : ""}
+          {group.size} member{group.size !== 1 ? 's' : ''}
         </span>
       </div>
     </li>
