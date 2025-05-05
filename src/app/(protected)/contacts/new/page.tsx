@@ -1,11 +1,11 @@
-'use client';
+"use client";
 
-import { useRouter } from 'next/navigation';
-import { useActionState, useEffect, useState } from 'react';
-import { ContactForm } from '@/components/contact-form';
-import { SubmitButton } from '@/components/submit-button';
-import { toast } from '@/components/toast';
-import { newContact, type MutationActionState } from '../actions';
+import { useRouter } from "next/navigation";
+import { useActionState, useEffect, useState } from "react";
+import { ContactForm } from "@/components/contact-form";
+import { SubmitButton } from "@/components/submit-button";
+import { toast } from "@/components/toast";
+import { newContact, type MutationActionState } from "../actions";
 
 export default function AddContactPage() {
   const router = useRouter();
@@ -15,30 +15,30 @@ export default function AddContactPage() {
   const [state, formAction] = useActionState<MutationActionState, FormData>(
     newContact,
     {
-      status: 'idle',
-    },
+      status: "idle",
+    }
   );
 
   useEffect(() => {
-    if (state.status === 'failed') {
+    if (state.status === "failed") {
       toast({
-        type: 'error',
-        description: state.message || 'Failed to add contact!',
+        type: "error",
+        description: state.message || "Failed to add contact!",
       });
       setIsSuccessful(false);
-    } else if (state.status === 'invalid_data') {
+    } else if (state.status === "invalid_data") {
       toast({
-        type: 'error',
-        description: state.message || 'Failed validating your submission!',
+        type: "error",
+        description: state.message || "Failed validating your submission!",
       });
       setIsSuccessful(false);
-    } else if (state.status === 'success') {
+    } else if (state.status === "success") {
       toast({
-        type: 'success',
-        description: state.message || 'Contact added successfully!',
+        type: "success",
+        description: state.message || "Contact added successfully!",
       });
       setIsSuccessful(true);
-      router.push('/contacts');
+      router.push("/contacts");
     }
   }, [state, router]);
 
@@ -47,7 +47,7 @@ export default function AddContactPage() {
   };
 
   return (
-    <div className="flex flex-col items-center justify-start pt-12 md:pt-16 px-4 w-full">
+    <div className="flex flex-col items-center justify-start pt-4 md:pt-6 px-4 w-full">
       <div className="w-full max-w-lg">
         <ContactForm
           action={handleSubmit}

@@ -1,5 +1,5 @@
-import { getClubDetailsAction } from '../actions';
-import { ClubDetails } from './club-details';
+import { getClubDetailsAction } from "../actions";
+import { ClubDetails } from "./club-details";
 
 export interface ClubDetailPageProps {
   params: {

@@ -1,6 +1,6 @@
-import { auth } from '@/app/(auth)/auth';
-import { getAllContacts } from '@/lib/db/queries/contacts';
-import { ContactSelector } from './ContactSelector';
+import { auth } from "@/app/(auth)/auth";
+import { getContactsForSharing } from "@/lib/db/queries/contacts";
+import { ContactSelector } from "./contact-selector";
 
 export default async function SelectContactsPage() {
   const session = await auth();
@@ -14,7 +14,7 @@ export default async function SelectContactsPage() {
     );
   }
 
-  const contacts = await getAllContacts(userEmail);
+  const contacts = await getContactsForSharing(userEmail);
 
   return <ContactSelector contacts={contacts} />;
 }

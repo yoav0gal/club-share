@@ -1,15 +1,15 @@
-'use client';
+"use client";
 
-import { useRouter, useParams } from 'next/navigation';
-import { useState, useEffect } from 'react';
-import { Button } from '@/components/ui/button';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { ArrowLeft } from 'lucide-react';
-import { Checkbox } from '@/components/ui/checkbox';
-import { Label } from '@/components/ui/label';
-import type { Contact } from '@/lib/db/schemas/club-share';
-import { toast } from '@/components/toast';
-import Link from 'next/link';
+import { useRouter, useParams } from "next/navigation";
+import { useState, useEffect } from "react";
+import { Button } from "@/components/ui/button";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { ArrowLeft } from "lucide-react";
+import { Checkbox } from "@/components/ui/checkbox";
+import { Label } from "@/components/ui/label";
+import type { Contact } from "@/lib/db/schemas/club-share";
+import { toast } from "@/components/toast";
+import Link from "next/link";
 
 export type ContactWithChecked = Contact & { checked: boolean };
 
@@ -22,7 +22,7 @@ export function GroupEditor({ contacts }: ContactSelectorProps) {
   const params = useParams();
   const groupId = params.id as string;
   const [selectedMemberEmails, setSelectedMemberEmails] = useState<string[]>(
-    [],
+    []
   );
 
   useEffect(() => {
@@ -38,27 +38,27 @@ export function GroupEditor({ contacts }: ContactSelectorProps) {
     setSelectedMemberEmails((prevSelected) =>
       prevSelected.includes(contactEmail)
         ? prevSelected.filter((email) => email !== contactEmail)
-        : [...prevSelected, contactEmail],
+        : [...prevSelected, contactEmail]
     );
   };
 
   const handleNext = () => {
     if (selectedMemberEmails.length === 0) {
       return toast({
-        type: 'error',
-        description: 'Please select at least one member',
+        type: "error",
+        description: "Please select at least one member",
       });
     }
     const searchParams = new URLSearchParams();
     selectedMemberEmails.forEach((email) => {
-      searchParams.append('memberEmails', email);
+      searchParams.append("memberEmails", email);
     });
 
     router.push(`/groups/${groupId}/edit/name?${searchParams.toString()}`);
   };
 
   return (
-    <div className="flex flex-col items-center justify-start pt-12 md:pt-16 px-4 w-full">
+    <div className="flex flex-col items-center justify-start pt-4 md:pt-6 px-4 w-full">
       <div className="w-full max-w-lg">
         <Button
           variant="ghost"
@@ -72,16 +72,16 @@ export function GroupEditor({ contacts }: ContactSelectorProps) {
 
         <Card>
           <CardHeader className="text-center">
-            <CardTitle className="text-xl">Edit Members</CardTitle>{' '}
+            <CardTitle className="text-xl">Edit Members</CardTitle>{" "}
           </CardHeader>
           <CardContent>
             <div className="grid gap-4">
               {contacts.length === 0 ? (
                 <p>
-                  No contacts found.{' '}
+                  No contacts found.{" "}
                   <Link href="/contacts/new" className="underline">
                     Add contacts
-                  </Link>{' '}
+                  </Link>{" "}
                   first.
                 </p>
               ) : (
@@ -94,7 +94,7 @@ export function GroupEditor({ contacts }: ContactSelectorProps) {
                       <Checkbox
                         id={`member-${contact.contactEmail}`}
                         checked={selectedMemberEmails.includes(
-                          contact.contactEmail,
+                          contact.contactEmail
                         )}
                         onCheckedChange={() =>
                           handleMemberSelectionChange(contact.contactEmail)

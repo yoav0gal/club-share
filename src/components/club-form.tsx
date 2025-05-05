@@ -1,20 +1,20 @@
-'use client';
+"use client";
 
-import { useState } from 'react';
-import { cn } from '@/lib/utils';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Input } from './ui/input';
-import { Label } from './ui/label';
-import { Button } from './ui/button';
-import { ArrowLeft, Plus, Trash2 } from 'lucide-react';
-import { useRouter } from 'next/navigation';
+import { useState } from "react";
+import { cn } from "@/lib/utils";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Input } from "./ui/input";
+import { Label } from "./ui/label";
+import { Button } from "./ui/button";
+import { ArrowLeft, Plus, Trash2 } from "lucide-react";
+import { useRouter } from "next/navigation";
 import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from '@/components/ui/select';
+} from "@/components/ui/select";
 
 interface ClubData {
   name?: string;
@@ -34,19 +34,19 @@ interface DetailField {
 }
 
 const detailOptions = [
-  { value: 'phone', label: 'Phone' },
-  { value: 'id', label: 'ID' },
-  { value: 'email', label: 'Email' },
-  { value: 'password', label: 'Password' },
-  { value: 'username', label: 'Username' },
-  { value: 'custom', label: 'Custom' },
+  { value: "phone", label: "Phone" },
+  { value: "id", label: "ID" },
+  { value: "email", label: "Email" },
+  { value: "password", label: "Password" },
+  { value: "username", label: "Username" },
+  { value: "custom", label: "Custom" },
 ];
 
 export function ClubForm({
   defaultValues = {},
   className,
   fieldErrors,
-  title = 'Club Details',
+  title = "Club Details",
   ...props
 }: {
   action: NonNullable<
@@ -61,12 +61,12 @@ export function ClubForm({
   const router = useRouter();
   const [details, setDetails] = useState<DetailField[]>(
     defaultValues.details?.map((d, i) => ({ ...d, id: i })) || [
-      { id: 0, type: 'phone', value: '' },
-    ],
+      { id: 0, type: "phone", value: "" },
+    ]
   );
 
   const addDetailField = () => {
-    setDetails([...details, { id: Date.now(), type: 'phone', value: '' }]);
+    setDetails([...details, { id: Date.now(), type: "phone", value: "" }]);
   };
 
   const removeDetailField = (id: number) => {
@@ -76,45 +76,42 @@ export function ClubForm({
   const handleDetailChange = (
     id: number,
     field: keyof DetailField,
-    value: string,
+    value: string
   ) => {
     setDetails(
       details.map((detail) =>
-        detail.id === id ? { ...detail, [field]: value } : detail,
-      ),
+        detail.id === id ? { ...detail, [field]: value } : detail
+      )
     );
   };
 
   const handleFormSubmit = (formData: FormData) => {
-    const formmatedDetails = details.reduce(
-      (acc, detail) => {
-        acc[detail.type] = detail.value;
-        return acc;
-      },
-      {} as Record<string, string>,
-    );
+    const formmatedDetails = details.reduce((acc, detail) => {
+      acc[detail.type] = detail.value;
+      return acc;
+    }, {} as Record<string, string>);
 
-    formData.delete('details');
-    formData.append('details', JSON.stringify(formmatedDetails));
+    formData.delete("details");
+    formData.append("details", JSON.stringify(formmatedDetails));
 
-    const clubName = formData.get('name') as string;
-    const clubDetailsString = formData.get('details') as string;
+    const clubName = formData.get("name") as string;
+    const clubDetailsString = formData.get("details") as string;
 
     if (!clubName) {
-      console.error('Club name is required.');
+      console.error("Club name is required.");
 
       return;
     }
 
     const params = new URLSearchParams();
-    params.set('name', clubName);
-    params.set('details', clubDetailsString);
+    params.set("name", clubName);
+    params.set("details", clubDetailsString);
 
     router.push(`/clubs/new/share?${params.toString()}`);
   };
 
   return (
-    <div className={cn('flex flex-col gap-6', className)} {...props}>
+    <div className={cn("flex flex-col gap-6", className)}>
       <Button variant="ghost" size="icon" onClick={() => router.back()}>
         <ArrowLeft className="h-5 w-5" />
         <span className="sr-only">Back</span>
@@ -167,33 +164,33 @@ export function ClubForm({
               </Label>
               {details.map((detail, index) => (
                 <div key={detail.id} className="flex items-end gap-2">
-                  <div className="grid gap-2 flex-grow">
-                    <Label
-                      htmlFor={`detail-type-${detail.id}`}
-                      className="sr-only"
-                    >
-                      Detail Type
-                    </Label>
-                    <Select
-                      value={detail.type}
-                      onValueChange={(value) =>
-                        handleDetailChange(detail.id, 'type', value)
-                      }
-                    >
-                      <SelectTrigger id={`detail-type-${detail.id}`}>
-                        <SelectValue placeholder="Select type" />
-                      </SelectTrigger>
-                      <SelectContent>
-                        {detailOptions.map((option) => (
-                          <SelectItem key={option.value} value={option.value}>
-                            {option.label}
-                          </SelectItem>
-                        ))}
-                      </SelectContent>
-                    </Select>
-                  </div>
-
-                  {detail.type === 'custom' && (
+                  {detail.type !== "custom" ? (
+                    <div className="grid gap-2 flex-grow">
+                      <Label
+                        htmlFor={`detail-type-${detail.id}`}
+                        className="sr-only"
+                      >
+                        Detail Type
+                      </Label>
+                      <Select
+                        value={detail.type}
+                        onValueChange={(value) =>
+                          handleDetailChange(detail.id, "type", value)
+                        }
+                      >
+                        <SelectTrigger id={`detail-type-${detail.id}`}>
+                          <SelectValue placeholder="Select type" />
+                        </SelectTrigger>
+                        <SelectContent>
+                          {detailOptions.map((option) => (
+                            <SelectItem key={option.value} value={option.value}>
+                              {option.label}
+                            </SelectItem>
+                          ))}
+                        </SelectContent>
+                      </Select>
+                    </div>
+                  ) : (
                     <div className="grid gap-2 flex-grow">
                       <Label
                         htmlFor={`detail-name-${detail.id}`}
@@ -207,10 +204,11 @@ export function ClubForm({
                         className="bg-muted text-md md:text-sm"
                         type="text"
                         placeholder="Field Name"
-                        value={detail.name || ''}
+                        value={detail.name || ""}
                         onChange={(e) =>
-                          handleDetailChange(detail.id, 'name', e.target.value)
+                          handleDetailChange(detail.id, "name", e.target.value)
                         }
+                        autoFocus
                         required
                       />
                     </div>
@@ -228,16 +226,16 @@ export function ClubForm({
                       name={`detail-value-${index}`}
                       className="bg-muted text-md md:text-sm"
                       type={
-                        detail.type === 'email'
-                          ? 'email'
-                          : detail.type === 'password'
-                            ? 'password'
-                            : 'text'
+                        detail.type === "email"
+                          ? "email"
+                          : detail.type === "password"
+                          ? "password"
+                          : "text"
                       } // Adjust input type based on selection
                       placeholder="Value"
                       value={detail.value}
                       onChange={(e) =>
-                        handleDetailChange(detail.id, 'value', e.target.value)
+                        handleDetailChange(detail.id, "value", e.target.value)
                       }
                       required
                     />

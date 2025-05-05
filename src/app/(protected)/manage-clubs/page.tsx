@@ -1,37 +1,20 @@
-'use client';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { BookUser, PlusCircle } from 'lucide-react';
-import { Button } from '@/components/ui/button';
-import { SearchBar } from '@/components/search-bar';
-import { useState, useEffect } from 'react';
-import Link from 'next/link';
-import { getOwnedClubsAction } from '../clubs/actions';
-import type { Club } from '@/lib/db/schemas/club-share';
-import { ClubCard } from '@/components/clubs/club-card';
+import { Card, CardContent } from "@/components/ui/card";
+import { BookUser, PlusCircle } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import Link from "next/link";
+import { getOwnedClubsAction } from "../clubs/actions";
+import { ClubsListClient } from "../clubs/clubs-list";
+import type { ClubDetails } from "@/lib/db/queries/clubs";
 
-export default function ManageClubsPage() {
-  const [searchQuery, setSearchQuery] = useState('');
-  const [clubs, setClubs] = useState<Club[]>([]);
-  const [isLoading, setIsLoading] = useState(true);
-
-  useEffect(() => {
-    async function fetchOwnedClubs() {
-      setIsLoading(true);
-      try {
-        const ownedClubs = await getOwnedClubsAction();
-        setClubs(ownedClubs);
-      } catch (error) {
-        console.error('Failed to fetch owned clubs:', error);
-      } finally {
-        setIsLoading(false);
-      }
-    }
-    fetchOwnedClubs();
-  }, []);
-
-  const filteredClubs = clubs.filter((club) =>
-    club.name.toLowerCase().includes(searchQuery.toLowerCase()),
-  );
+export default async function ManageClubsPage() {
+  let clubs: ClubDetails[] = [];
+  let error = null;
+  try {
+    clubs = await getOwnedClubsAction();
+  } catch (e) {
+    console.error("Failed to fetch owned clubs:", e);
+    error = "Failed to load clubs. Please try again later.";
+  }
 
   return (
     <div className="container mx-auto py-6">
@@ -49,47 +32,16 @@ export default function ManageClubsPage() {
         </Link>
       </div>
 
-      <div className="mb-6">
-        <SearchBar
-          placeholder="Search your clubs..."
-          onChange={setSearchQuery}
-        />
-      </div>
-
-      <Card>
-        <CardHeader>
-          <CardTitle>Your Clubs</CardTitle>
-        </CardHeader>
-        <CardContent>
-          <p className="text-muted-foreground mb-4">
-            Manage the clubs you own and control access to.
-          </p>
-
-          {isLoading ? (
-            <div className="py-8 text-center text-muted-foreground">
-              Loading your clubs...
-            </div>
-          ) : filteredClubs.length > 0 ? (
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-              {filteredClubs.map((club) => (
-                // Ensure ClubCard props match what it expects (id, name, ownerEmail)
-                <ClubCard
-                  key={club.id}
-                  club={{
-                    id: club.id,
-                    name: club.name,
-                    ownerEmail: club.ownerEmail,
-                  }}
-                />
-              ))}
-            </div>
-          ) : (
-            <div className="py-8 text-center text-muted-foreground">
-              You don&apost have any clubs yet. Create one to get started.
-            </div>
-          )}
-        </CardContent>
-      </Card>
+      {/* Render the client component, passing the fetched data */}
+      {error ? (
+        <Card>
+          <CardContent className="py-8 text-center text-destructive">
+            {error}
+          </CardContent>
+        </Card>
+      ) : (
+        <ClubsListClient initialClubs={clubs} />
+      )}
     </div>
   );
 }

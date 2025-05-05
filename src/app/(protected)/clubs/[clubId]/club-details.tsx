@@ -1,14 +1,14 @@
-'use client';
+"use client";
 
-import { useState } from 'react';
-import { useRouter } from 'next/navigation';
-import { useActionState } from 'react';
-import { deleteClubAction, type MutationActionState } from '../actions';
-import type { ClubDetailsWithOwnership } from '@/lib/db/queries/clubs'; // Use the correct type
-import { Card, CardContent, CardHeader } from '@/components/ui/card';
-import { Button } from '@/components/ui/button';
-import { ArrowLeft, Pencil, Trash2 } from 'lucide-react';
-import { toast } from '@/components/toast';
+import { useState } from "react";
+import { useRouter } from "next/navigation";
+import { useActionState } from "react";
+import { deleteClubAction, type MutationActionState } from "../actions";
+import type { ClubDetailsWithOwnership } from "@/lib/db/queries/clubs"; // Use the correct type
+import { Card, CardContent, CardHeader } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
+import { ArrowLeft, Pencil, Trash2 } from "lucide-react";
+import { toast } from "@/components/toast";
 import {
   AlertDialog,
   AlertDialogCancel,
@@ -18,10 +18,10 @@ import {
   AlertDialogHeader,
   AlertDialogTitle,
   AlertDialogTrigger,
-} from '@/components/ui/alert-dialog';
-import { SubmitButton } from '@/components/submit-button';
-import Link from 'next/link';
-import Form from 'next/form';
+} from "@/components/ui/alert-dialog";
+import { SubmitButton } from "@/components/submit-button";
+import Link from "next/link";
+import Form from "next/form";
 
 // Define the props for the ClubDeleteButton component
 interface ClubDeleteButtonProps {
@@ -62,7 +62,7 @@ function ClubDeleteButton({
           <Form action={handleDelete} className="inline-flex">
             <input type="hidden" name="clubId" value={clubId} />
             <SubmitButton isSuccessful={isDeletePending}>
-              {isDeletePending ? 'Deleting...' : 'Delete'}
+              {isDeletePending ? "Deleting..." : "Delete"}
             </SubmitButton>
           </Form>
         </AlertDialogFooter>
@@ -84,37 +84,37 @@ export function ClubDetails({ clubDetails }: ClubDetailsProps) {
   const [deleteState, deleteFormAction] = useActionState<
     MutationActionState,
     FormData
-  >(deleteClubAction, { status: 'idle' });
+  >(deleteClubAction, { status: "idle" });
 
   const handleDelete = () => {
     setIsDeletePending(true);
     // The form inside ClubDeleteButton will handle submitting the FormData
     // We just need to trigger the action state hook here
     const formData = new FormData();
-    formData.append('clubId', club.id);
+    formData.append("clubId", club.id);
     deleteFormAction(formData);
   };
 
   // Handle successful deletion
-  if (deleteState.status === 'success') {
+  if (deleteState.status === "success") {
     toast({
-      type: 'success',
-      description: deleteState.message || 'Club deleted successfully!',
+      type: "success",
+      description: deleteState.message || "Club deleted successfully!",
     });
     // Redirect to the clubs list page after successful deletion
-    router.push('/clubs');
+    router.push("/clubs");
     return null; // Prevent rendering the rest of the component after redirect
   }
 
   // Handle deletion failure
   if (
-    deleteState.status === 'failed' ||
-    deleteState.status === 'unauthorized' ||
-    deleteState.status === 'invalid_data'
+    deleteState.status === "failed" ||
+    deleteState.status === "unauthorized" ||
+    deleteState.status === "invalid_data"
   ) {
     toast({
-      type: 'error',
-      description: deleteState.message || 'Failed to delete club.',
+      type: "error",
+      description: deleteState.message || "Failed to delete club.",
     });
     // Reset pending state on failure
     if (isDeletePending) {
@@ -137,20 +137,22 @@ export function ClubDetails({ clubDetails }: ClubDetailsProps) {
           <h1 className="text-2xl font-bold">{club.name}</h1>
           <div className="flex gap-2">
             {isOwner && (
-              <Link href={`/clubs/${club.id}/edit`}>
-                {' '}
-                {/* Placeholder for edit link */}
-                <Button variant="outline" size="icon" title="Edit Club">
-                  <Pencil className="h-4 w-4" />
-                </Button>
-              </Link>
+              <>
+                <Link href={`/clubs/${club.id}/edit`}>
+                  {" "}
+                  {/* Placeholder for edit link */}
+                  <Button variant="outline" size="icon" title="Edit Club">
+                    <Pencil className="h-4 w-4" />
+                  </Button>
+                </Link>
+                <ClubDeleteButton
+                  clubId={club.id}
+                  isOwner={isOwner}
+                  handleDelete={handleDelete} // Pass the handler
+                  isDeletePending={isDeletePending}
+                />
+              </>
             )}
-            <ClubDeleteButton
-              clubId={club.id}
-              isOwner={isOwner}
-              handleDelete={handleDelete} // Pass the handler
-              isDeletePending={isDeletePending}
-            />
           </div>
         </CardHeader>
         <CardContent className="pt-6">
@@ -169,7 +171,7 @@ export function ClubDetails({ clubDetails }: ClubDetailsProps) {
                   {Object.entries(club.details).map(([key, value]) => (
                     <div key={key} className="flex flex-col">
                       <dt className="font-medium capitalize text-muted-foreground">
-                        {key.replace(/_/g, ' ')}
+                        {key.replace(/_/g, " ")}
                       </dt>
                       <dd>{String(value)}</dd> {/* Ensure value is string */}
                     </div>
