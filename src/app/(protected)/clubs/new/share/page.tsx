@@ -1,30 +1,30 @@
-"use client";
+'use client';
 
-import { useState, useEffect, useActionState, startTransition } from "react";
-import { useRouter, useSearchParams } from "next/navigation";
+import { useState, useEffect, useActionState, startTransition } from 'react';
+import { useRouter, useSearchParams } from 'next/navigation';
 import {
   getClubSharingOptionsAction,
   newClubAction,
   type MutationActionState,
-} from "../../actions";
-import type { ContactsForShare } from "@/lib/db/queries/contacts";
-import type { GroupsForShare } from "@/lib/db/queries/groups";
-import { ShareSelector } from "@/components/share/share-selector";
+} from '../../actions';
+import type { ContactsForShare } from '@/lib/db/queries/contacts';
+import type { GroupsForShare } from '@/lib/db/queries/groups';
+import { ShareSelector } from '@/components/share/share-selector';
 
-import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { toast } from "@/components/toast";
-import { ArrowLeft } from "lucide-react";
+import { Button } from '@/components/ui/button';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { toast } from '@/components/toast';
+import { ArrowLeft } from 'lucide-react';
 
 const initialState: MutationActionState = {
-  status: "idle",
+  status: 'idle',
 };
 
 export default function ShareClubPage() {
   const searchParams = useSearchParams();
   const router = useRouter();
-  const clubName = searchParams.get("name") || "";
-  const clubDetails = searchParams.get("details") || "{}";
+  const clubName = searchParams.get('name') || '';
+  const clubDetails = searchParams.get('details') || '{}';
 
   const [contacts, setContacts] = useState<ContactsForShare[]>([]);
   const [groups, setGroups] = useState<GroupsForShare[]>([]);
@@ -41,11 +41,11 @@ export default function ShareClubPage() {
         setGroups(fetchedGroups || []);
         setError(null);
       } catch (err) {
-        console.error("Failed to fetch sharing options:", err);
-        setError("Failed to load contacts and groups.");
+        console.error('Failed to fetch sharing options:', err);
+        setError('Failed to load contacts and groups.');
         toast({
-          type: "error",
-          description: "Could not load sharing options.",
+          type: 'error',
+          description: 'Could not load sharing options.',
         });
       } finally {
         setIsLoading(false);
@@ -106,13 +106,13 @@ function ShareClubPageContent({
   groups: GroupsForShare[];
 }) {
   const [selectedContactEmails, setSelectedContactEmails] = useState<string[]>(
-    []
+    [],
   );
   const [selectedGroupNames, setSelectedGroupNames] = useState<string[]>([]);
   const [allMemberEmails, setAllMemberEmails] = useState<string[]>([]);
   const [formState, formAction] = useActionState<MutationActionState, FormData>(
     newClubAction,
-    initialState
+    initialState,
   );
   const [isSubmitting, setIsSubmitting] = useState(false);
   const router = useRouter();
@@ -120,7 +120,7 @@ function ShareClubPageContent({
   const handleSelectionChange = (
     contactEmails: string[],
     groupNames: string[],
-    memberEmails: string[]
+    memberEmails: string[],
   ) => {
     setSelectedContactEmails(contactEmails);
     setSelectedGroupNames(groupNames);
@@ -129,41 +129,41 @@ function ShareClubPageContent({
 
   useEffect(() => {
     // Track submission status
-    if (formState.status === "in_progress") {
+    if (formState.status === 'in_progress') {
       setIsSubmitting(true);
     } else {
       setIsSubmitting(false);
     }
 
-    if (formState.status === "success") {
+    if (formState.status === 'success') {
       toast({
-        type: "success",
-        description: formState.message || "Club created successfully.",
+        type: 'success',
+        description: formState.message || 'Club created successfully.',
       });
 
-      router.push("/clubs");
+      router.push('/clubs');
     } else if (
-      formState.status === "failed" ||
-      formState.status === "invalid_data" ||
-      formState.status === "unauthorized"
+      formState.status === 'failed' ||
+      formState.status === 'invalid_data' ||
+      formState.status === 'unauthorized'
     ) {
       toast({
-        type: "error",
-        description: formState.message || "An error occurred.",
+        type: 'error',
+        description: formState.message || 'An error occurred.',
       });
     }
   }, [formState, router]);
 
   if (!clubName) {
-    router.push("/clubs/");
+    router.push('/clubs/');
   }
 
   const handleSubmit = () => {
     const formData = new FormData();
-    formData.append("name", clubName);
-    formData.append("details", clubDetails);
+    formData.append('name', clubName);
+    formData.append('details', clubDetails);
 
-    allMemberEmails.forEach((email) => formData.append("memberEmails", email));
+    allMemberEmails.forEach((email) => formData.append('memberEmails', email));
     startTransition(() => {
       formAction(formData);
     });

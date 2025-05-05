@@ -1,15 +1,15 @@
-"use client";
+'use client';
 
-import { useRouter } from "next/navigation";
-import { useState } from "react";
-import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { ArrowLeft, Search } from "lucide-react"; // Added Search
-import Link from "next/link";
-import { ContactShareListItem } from "@/components/share/contact-share-item";
-import { ScrollArea } from "@/components/ui/scroll-area";
-import { Input } from "@/components/ui/input";
-import type { ContactsForShare } from "@/lib/db/queries/contacts";
+import { useRouter } from 'next/navigation';
+import { useState } from 'react';
+import { Button } from '@/components/ui/button';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { ArrowLeft, Search } from 'lucide-react'; // Added Search
+import Link from 'next/link';
+import { ContactShareListItem } from '@/components/share/contact-share-item';
+import { ScrollArea } from '@/components/ui/scroll-area';
+import { Input } from '@/components/ui/input';
+import type { ContactsForShare } from '@/lib/db/queries/contacts';
 
 type ContactSelectorProps = {
   contacts: ContactsForShare[];
@@ -18,15 +18,15 @@ type ContactSelectorProps = {
 export function ContactSelector({ contacts }: ContactSelectorProps) {
   const router = useRouter();
   const [selectedMemberEmails, setSelectedMemberEmails] = useState<Set<string>>(
-    new Set()
+    new Set(),
   );
-  const [searchTerm, setSearchTerm] = useState(""); // Added search term state
+  const [searchTerm, setSearchTerm] = useState(''); // Added search term state
 
   const handleMemberSelectionChange = (
     contactEmail: string,
-    type: "contact" | "group"
+    type: 'contact' | 'group',
   ) => {
-    if (type !== "contact") return;
+    if (type !== 'contact') return;
     setSelectedMemberEmails((prevSelected) => {
       const newSet = new Set(prevSelected);
       if (newSet.has(contactEmail)) {
@@ -40,12 +40,12 @@ export function ContactSelector({ contacts }: ContactSelectorProps) {
 
   const handleNext = () => {
     if (selectedMemberEmails.size === 0) {
-      alert("Please select at least one contact");
+      alert('Please select at least one contact');
       return;
     }
     const searchParams = new URLSearchParams();
     selectedMemberEmails.forEach((email) => {
-      searchParams.append("memberEmails", email);
+      searchParams.append('memberEmails', email);
     });
     router.push(`/groups/new?${searchParams.toString()}`);
   };
@@ -54,7 +54,7 @@ export function ContactSelector({ contacts }: ContactSelectorProps) {
   const filteredContacts = contacts.filter((contact) =>
     (contact.displayName || contact.contactEmail)
       .toLowerCase()
-      .includes(searchTerm.toLowerCase())
+      .includes(searchTerm.toLowerCase()),
   );
 
   return (
@@ -63,7 +63,7 @@ export function ContactSelector({ contacts }: ContactSelectorProps) {
         <Button
           variant="ghost"
           size="icon"
-          onClick={() => router.push("/groups")}
+          onClick={() => router.push('/groups')}
           className="mb-6"
         >
           <ArrowLeft className="h-5 w-5" />
@@ -91,15 +91,15 @@ export function ContactSelector({ contacts }: ContactSelectorProps) {
 
               {contacts.length === 0 ? (
                 <p>
-                  No contacts found.{" "}
+                  No contacts found.{' '}
                   <Link href="/contacts/new" className="underline">
                     Add contacts
-                  </Link>{" "}
+                  </Link>{' '}
                   first.
                 </p>
               ) : (
                 <ScrollArea className="max-h-[50vh] pr-2">
-                  {" "}
+                  {' '}
                   {/* Adjusted max height */}
                   <ul className="space-y-0.5">
                     {filteredContacts.length === 0 ? (
@@ -114,10 +114,10 @@ export function ContactSelector({ contacts }: ContactSelectorProps) {
                           contact={{
                             contactEmail: contact.contactEmail,
                             displayName: contact.displayName,
-                            image: contact.image ?? "",
+                            image: contact.image ?? '',
                           }}
                           isSelected={selectedMemberEmails.has(
-                            contact.contactEmail
+                            contact.contactEmail,
                           )}
                           onSelect={handleMemberSelectionChange}
                         />

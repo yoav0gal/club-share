@@ -1,10 +1,10 @@
-import { Card, CardContent } from "@/components/ui/card";
-import { Book, PlusCircle } from "lucide-react";
-import { Button } from "@/components/ui/button";
-import Link from "next/link";
-import { getAllMemberClubsAction } from "./actions";
-import { ClubsListClient } from "./clubs-list";
-import type { ClubDetails } from "@/lib/db/queries/clubs";
+import { Card, CardContent } from '@/components/ui/card';
+import { Book, PlusCircle } from 'lucide-react';
+import { Button } from '@/components/ui/button';
+import Link from 'next/link';
+import { getAllMemberClubsAction } from './actions';
+import { ClubsListClient } from './clubs-list';
+import type { ClubDetails } from '@/lib/db/queries/clubs';
 
 export default async function ClubsPage() {
   let clubs: ClubDetails[] = [];
@@ -12,8 +12,8 @@ export default async function ClubsPage() {
   try {
     clubs = await getAllMemberClubsAction();
   } catch (e) {
-    console.error("Failed to fetch member clubs:", e);
-    error = "Failed to load clubs. Please try again later.";
+    console.error('Failed to fetch member clubs:', e);
+    error = 'Failed to load clubs. Please try again later.';
   }
 
   return (

@@ -1,11 +1,11 @@
-"use client";
+'use client';
 
-import { useRouter } from "next/navigation";
-import { useActionState, useEffect, useState } from "react";
-import { GroupForm } from "@/components/group-form";
-import { SubmitButton } from "@/components/submit-button";
-import { toast } from "@/components/toast";
-import { newGroupAction, type MutationActionState } from "../actions";
+import { useRouter } from 'next/navigation';
+import { useActionState, useEffect, useState } from 'react';
+import { GroupForm } from '@/components/group-form';
+import { SubmitButton } from '@/components/submit-button';
+import { toast } from '@/components/toast';
+import { newGroupAction, type MutationActionState } from '../actions';
 
 export default function AddGroupPage() {
   const router = useRouter();
@@ -15,30 +15,30 @@ export default function AddGroupPage() {
   const [state, formAction] = useActionState<MutationActionState, FormData>(
     newGroupAction,
     {
-      status: "idle",
-    }
+      status: 'idle',
+    },
   );
 
   useEffect(() => {
-    if (state.status === "failed") {
+    if (state.status === 'failed') {
       toast({
-        type: "error",
-        description: state.message || "Failed to add group!",
+        type: 'error',
+        description: state.message || 'Failed to add group!',
       });
       setIsSuccessful(false);
-    } else if (state.status === "invalid_data") {
+    } else if (state.status === 'invalid_data') {
       toast({
-        type: "error",
-        description: state.message || "Failed validating your submission!",
+        type: 'error',
+        description: state.message || 'Failed validating your submission!',
       });
       setIsSuccessful(false);
-    } else if (state.status === "success") {
+    } else if (state.status === 'success') {
       toast({
-        type: "success",
-        description: state.message || "Group added successfully!",
+        type: 'success',
+        description: state.message || 'Group added successfully!',
       });
       setIsSuccessful(true);
-      router.push("/groups");
+      router.push('/groups');
     }
   }, [state, router]);
 

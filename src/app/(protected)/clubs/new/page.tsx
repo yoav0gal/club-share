@@ -1,16 +1,16 @@
-"use client";
+'use client';
 
-import { useRouter } from "next/navigation";
-import { useState } from "react";
-import { ClubForm } from "@/components/club-form";
-import { Button } from "@/components/ui/button";
+import { useRouter } from 'next/navigation';
+import { useState } from 'react';
+import { ClubForm } from '@/components/club-form';
+import { Button } from '@/components/ui/button';
 
 export default function AddClubPage() {
   const router = useRouter();
   const [defaultValues] = useState({});
 
   const handleSubmit = () => {
-    router.push("/clubs/new/share");
+    router.push('/clubs/new/share');
   };
 
   return (

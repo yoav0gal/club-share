@@ -1,24 +1,24 @@
-"use client";
+'use client';
 
-import { useActionState, useEffect, useState } from "react";
-import { useRouter } from "next/navigation";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
-import { SubmitButton } from "@/components/submit-button";
+import { useActionState, useEffect, useState } from 'react';
+import { useRouter } from 'next/navigation';
+import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
+import { Label } from '@/components/ui/label';
+import { SubmitButton } from '@/components/submit-button';
 import {
   Card,
   CardContent,
   CardHeader,
   CardTitle,
   CardFooter,
-} from "@/components/ui/card";
-import { ArrowLeft } from "lucide-react";
+} from '@/components/ui/card';
+import { ArrowLeft } from 'lucide-react';
 import {
   updateGroupAction,
   type MutationActionState,
-} from "@/app/(protected)/groups/actions";
-import Form from "next/form";
+} from '@/app/(protected)/groups/actions';
+import Form from 'next/form';
 
 interface GroupNameEditorFormProps {
   groupId: string;
@@ -38,10 +38,10 @@ export function GroupNameEditorForm({
   const [updateState, updateFormAction] = useActionState<
     MutationActionState,
     FormData
-  >(updateGroupAction, { status: "idle" });
+  >(updateGroupAction, { status: 'idle' });
 
   useEffect(() => {
-    if (updateState.status === "success") {
+    if (updateState.status === 'success') {
       router.push(`/groups`);
     }
   }, [updateState, router]);
@@ -96,24 +96,24 @@ export function GroupNameEditorForm({
                   minLength={1}
                 />
               </div>
-              {updateState.status === "failed" && (
+              {updateState.status === 'failed' && (
                 <p className="text-sm text-red-500">{updateState.message}</p>
               )}
-              {updateState.status === "invalid_data" && (
+              {updateState.status === 'invalid_data' && (
                 <p className="text-sm text-red-500">
-                  {updateState.message || "Invalid data provided."}
+                  {updateState.message || 'Invalid data provided.'}
                 </p>
               )}
-              {updateState.status === "unauthorized" && (
+              {updateState.status === 'unauthorized' && (
                 <p className="text-sm text-red-500">
-                  {updateState.message || "You are not authorized."}
+                  {updateState.message || 'You are not authorized.'}
                 </p>
               )}
             </CardContent>
             <CardFooter>
               <SubmitButton
                 className="w-full"
-                isSuccessful={updateState.status === "success"}
+                isSuccessful={updateState.status === 'success'}
               >
                 Save Changes
               </SubmitButton>

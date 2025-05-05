@@ -1,16 +1,16 @@
-"use client";
+'use client';
 
-import { useRouter, useParams } from "next/navigation";
-import { useState, useEffect } from "react";
-import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { ArrowLeft, Search } from "lucide-react"; // Added Search
-import { toast } from "@/components/toast";
-import type { EditSharedWithItem } from "@/lib/db/queries/clubs";
-import Link from "next/link";
-import { ContactShareListItem } from "@/components/share/contact-share-item";
-import { ScrollArea } from "@/components/ui/scroll-area";
-import { Input } from "@/components/ui/input"; // Added Input
+import { useRouter, useParams } from 'next/navigation';
+import { useState, useEffect } from 'react';
+import { Button } from '@/components/ui/button';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { ArrowLeft, Search } from 'lucide-react'; // Added Search
+import { toast } from '@/components/toast';
+import type { EditSharedWithItem } from '@/lib/db/queries/clubs';
+import Link from 'next/link';
+import { ContactShareListItem } from '@/components/share/contact-share-item';
+import { ScrollArea } from '@/components/ui/scroll-area';
+import { Input } from '@/components/ui/input'; // Added Input
 
 type ClubEditorProps = {
   sharedWith: EditSharedWithItem[];
@@ -22,9 +22,9 @@ export function ClubEditor({ sharedWith }: ClubEditorProps) {
   const params = useParams();
   const clubId = params.clubId as string;
   const [selectedMemberEmails, setSelectedMemberEmails] = useState<Set<string>>(
-    new Set()
+    new Set(),
   );
-  const [searchTerm, setSearchTerm] = useState(""); // Added search term state
+  const [searchTerm, setSearchTerm] = useState(''); // Added search term state
 
   useEffect(() => {
     if (sharedWith) {
@@ -37,9 +37,9 @@ export function ClubEditor({ sharedWith }: ClubEditorProps) {
 
   const handleMemberSelectionChange = (
     email: string,
-    type: "contact" | "group"
+    type: 'contact' | 'group',
   ) => {
-    if (type !== "contact") return;
+    if (type !== 'contact') return;
     setSelectedMemberEmails((prevSelected) => {
       const newSet = new Set(prevSelected);
       if (newSet.has(email)) {
@@ -54,13 +54,13 @@ export function ClubEditor({ sharedWith }: ClubEditorProps) {
   const handleNext = () => {
     if (selectedMemberEmails.size === 0) {
       return toast({
-        type: "error",
-        description: "Please select at least one member",
+        type: 'error',
+        description: 'Please select at least one member',
       });
     }
     const searchParams = new URLSearchParams();
     selectedMemberEmails.forEach((email) => {
-      searchParams.append("memberEmails", email);
+      searchParams.append('memberEmails', email);
     });
 
     router.push(`/clubs/${clubId}/edit/name?${searchParams.toString()}`);
@@ -68,7 +68,7 @@ export function ClubEditor({ sharedWith }: ClubEditorProps) {
 
   // Filter sharedWith based on search term
   const filteredSharedWith = sharedWith.filter((item) =>
-    (item.name || item.email).toLowerCase().includes(searchTerm.toLowerCase())
+    (item.name || item.email).toLowerCase().includes(searchTerm.toLowerCase()),
   );
 
   return (
@@ -105,15 +105,15 @@ export function ClubEditor({ sharedWith }: ClubEditorProps) {
 
               {sharedWith.length === 0 ? (
                 <p>
-                  No contacts found.{" "}
+                  No contacts found.{' '}
                   <Link href="/contacts/new" className="underline">
                     Add contacts
-                  </Link>{" "}
+                  </Link>{' '}
                   first.
                 </p>
               ) : (
                 <ScrollArea className="max-h-[50vh] pr-2">
-                  {" "}
+                  {' '}
                   {/* Adjusted max height */}
                   <ul className="space-y-0.5">
                     {filteredSharedWith.length === 0 ? (
@@ -128,7 +128,7 @@ export function ClubEditor({ sharedWith }: ClubEditorProps) {
                           contact={{
                             contactEmail: item.email,
                             displayName: item.name,
-                            image: item.image ?? "",
+                            image: item.image ?? '',
                           }}
                           isSelected={selectedMemberEmails.has(item.email)}
                           onSelect={handleMemberSelectionChange}

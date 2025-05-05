@@ -3,13 +3,14 @@ import { getGroupDetailsAction } from '../actions';
 import { GroupDetails } from './group-details';
 
 export interface GroupPageProps {
-  params: {
+  params: Promise<{
     id: string;
-  };
+  }>;
 }
 
 export default async function GroupPage({ params }: GroupPageProps) {
-  const groupDetails = await getGroupDetailsAction(params.id);
+  const { id } = await params;
+  const groupDetails = await getGroupDetailsAction(id);
 
   if (!groupDetails) {
     return (

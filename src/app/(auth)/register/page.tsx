@@ -1,56 +1,56 @@
-"use client";
+'use client';
 
-import Link from "next/link";
-import { useRouter } from "next/navigation";
-import { useActionState, useEffect, useState } from "react";
-import { RegisterForm } from "@/components/register-form";
-import { SubmitButton } from "@/components/submit-button";
-import { register, type RegisterActionState } from "../actions";
-import { toast } from "@/components/toast";
-import { useSession } from "next-auth/react";
+import Link from 'next/link';
+import { useRouter } from 'next/navigation';
+import { useActionState, useEffect, useState } from 'react';
+import { RegisterForm } from '@/components/register-form';
+import { SubmitButton } from '@/components/submit-button';
+import { register, type RegisterActionState } from '../actions';
+import { toast } from '@/components/toast';
+import { useSession } from 'next-auth/react';
 
 export default function RegisterPage() {
   const router = useRouter();
 
-  const [email, setEmail] = useState("");
-  const [name, setName] = useState("");
+  const [email, setEmail] = useState('');
+  const [name, setName] = useState('');
   const [isSuccessful, setIsSuccessful] = useState(false);
   const { update: updateSession } = useSession();
 
   const [state, formAction] = useActionState<RegisterActionState, FormData>(
     register,
     {
-      status: "idle",
-    }
+      status: 'idle',
+    },
   );
 
   useEffect(() => {
-    if (state.status === "user_exists") {
+    if (state.status === 'user_exists') {
       toast({
-        type: "error",
-        description: state.message || "Account already exists!",
+        type: 'error',
+        description: state.message || 'Account already exists!',
       });
-    } else if (state.status === "failed") {
+    } else if (state.status === 'failed') {
       toast({
-        type: "error",
-        description: state.message || "Failed to create account!",
+        type: 'error',
+        description: state.message || 'Failed to create account!',
       });
-    } else if (state.status === "invalid_data") {
+    } else if (state.status === 'invalid_data') {
       toast({
-        type: "error",
-        description: state.message || "Failed validating your submission!",
+        type: 'error',
+        description: state.message || 'Failed validating your submission!',
       });
-    } else if (state.status === "success") {
-      toast({ type: "success", description: "Account created successfully!" });
+    } else if (state.status === 'success') {
+      toast({ type: 'success', description: 'Account created successfully!' });
       setIsSuccessful(true);
       updateSession();
-      router.push("/clubs");
+      router.push('/clubs');
     }
   }, [state, router]);
 
   const handleSubmit = (formData: FormData) => {
-    setEmail(formData.get("email") as string);
-    setName(formData.get("name") as string);
+    setEmail(formData.get('email') as string);
+    setName(formData.get('name') as string);
     formAction(formData);
   };
 
@@ -68,14 +68,14 @@ export default function RegisterPage() {
         >
           <SubmitButton isSuccessful={isSuccessful}>Sign Up</SubmitButton>
           <p className="text-center text-sm text-gray-600 mt-4 dark:text-zinc-400">
-            {"Already have an account? "}
+            {'Already have an account? '}
             <Link
               href="/login"
               className="font-semibold text-gray-800 hover:underline dark:text-zinc-200"
             >
               Log In
             </Link>
-            {" instead."}
+            {' instead.'}
           </p>
         </RegisterForm>
       </div>

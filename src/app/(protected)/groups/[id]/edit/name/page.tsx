@@ -7,7 +7,9 @@ import { redirect } from 'next/navigation';
 export default async function EditGroupNamePage({
   params,
   searchParams,
-}: GroupPageProps & { searchParams: { memberEmails?: string | string[] } }) {
+}: GroupPageProps & {
+  searchParams: Promise<{ memberEmails?: string | string[] }>;
+}) {
   const session = await auth();
   if (!session?.user?.email) {
     return (

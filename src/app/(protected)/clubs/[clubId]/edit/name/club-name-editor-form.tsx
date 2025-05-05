@@ -1,31 +1,31 @@
-"use client";
+'use client';
 
-import { useActionState, useEffect, useState } from "react";
-import { useRouter } from "next/navigation";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
-import { SubmitButton } from "@/components/submit-button";
+import { useActionState, useEffect, useState } from 'react';
+import { useRouter } from 'next/navigation';
+import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
+import { Label } from '@/components/ui/label';
+import { SubmitButton } from '@/components/submit-button';
 import {
   Card,
   CardContent,
   CardHeader,
   CardTitle,
   CardFooter,
-} from "@/components/ui/card";
-import { ArrowLeft, Plus, Trash2 } from "lucide-react";
+} from '@/components/ui/card';
+import { ArrowLeft, Plus, Trash2 } from 'lucide-react';
 import {
   updateClubAction,
   type MutationActionState,
-} from "@/app/(protected)/clubs/actions";
-import Form from "next/form";
+} from '@/app/(protected)/clubs/actions';
+import Form from 'next/form';
 import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from "@/components/ui/select";
+} from '@/components/ui/select';
 
 interface ClubNameEditorFormProps {
   clubId: string;
@@ -42,12 +42,12 @@ interface DetailField {
 }
 
 const detailOptions = [
-  { value: "phone", label: "Phone" },
-  { value: "id", label: "ID" },
-  { value: "email", label: "Email" },
-  { value: "password", label: "Password" },
-  { value: "username", label: "Username" },
-  { value: "custom", label: "Custom" },
+  { value: 'phone', label: 'Phone' },
+  { value: 'id', label: 'ID' },
+  { value: 'email', label: 'Email' },
+  { value: 'password', label: 'Password' },
+  { value: 'username', label: 'Username' },
+  { value: 'custom', label: 'Custom' },
 ];
 
 export function ClubNameEditorForm({
@@ -63,21 +63,21 @@ export function ClubNameEditorForm({
   const [details, setDetails] = useState<DetailField[]>(() => {
     // If currentDetails is empty, start with one empty phone field
     if (!currentDetails || Object.keys(currentDetails).length === 0) {
-      return [{ id: 0, type: "phone", value: "" }];
+      return [{ id: 0, type: 'phone', value: '' }];
     }
 
     return Object.entries(currentDetails).map(([key, value], index) => {
       const isStandardType = [
-        "phone",
-        "id",
-        "email",
-        "password",
-        "username",
+        'phone',
+        'id',
+        'email',
+        'password',
+        'username',
       ].includes(key.toLowerCase());
 
       return {
         id: index,
-        type: isStandardType ? key.toLowerCase() : "custom",
+        type: isStandardType ? key.toLowerCase() : 'custom',
         name: isStandardType ? undefined : key,
         value: String(value),
       };
@@ -87,10 +87,10 @@ export function ClubNameEditorForm({
   const [updateState, updateFormAction] = useActionState<
     MutationActionState,
     FormData
-  >(updateClubAction, { status: "idle" });
+  >(updateClubAction, { status: 'idle' });
 
   const addDetailField = () => {
-    setDetails([...details, { id: Date.now(), type: "phone", value: "" }]);
+    setDetails([...details, { id: Date.now(), type: 'phone', value: '' }]);
   };
 
   const removeDetailField = (id: number) => {
@@ -100,17 +100,17 @@ export function ClubNameEditorForm({
   const handleDetailChange = (
     id: number,
     field: keyof DetailField,
-    value: string
+    value: string,
   ) => {
     setDetails(
       details.map((detail) =>
-        detail.id === id ? { ...detail, [field]: value } : detail
-      )
+        detail.id === id ? { ...detail, [field]: value } : detail,
+      ),
     );
   };
 
   useEffect(() => {
-    if (updateState.status === "success") {
+    if (updateState.status === 'success') {
       router.push(`/clubs`); // Navigate to clubs list on success
     }
   }, [updateState, router]);
@@ -151,12 +151,15 @@ export function ClubNameEditorForm({
                 type="hidden"
                 name="details"
                 value={JSON.stringify(
-                  details.reduce((acc, detail) => {
-                    const key =
-                      detail.type === "custom" ? detail.name : detail.type;
-                    if (key) acc[key] = detail.value;
-                    return acc;
-                  }, {} as Record<string, string>)
+                  details.reduce(
+                    (acc, detail) => {
+                      const key =
+                        detail.type === 'custom' ? detail.name : detail.type;
+                      if (key) acc[key] = detail.value;
+                      return acc;
+                    },
+                    {} as Record<string, string>,
+                  ),
                 )}
               />
 
@@ -186,7 +189,7 @@ export function ClubNameEditorForm({
                 </Label>
                 {details.map((detail, index) => (
                   <div key={detail.id} className="flex items-end gap-2">
-                    {detail.type !== "custom" ? (
+                    {detail.type !== 'custom' ? (
                       <div className="grid gap-2 flex-grow">
                         <Label
                           htmlFor={`detail-type-${detail.id}`}
@@ -197,7 +200,7 @@ export function ClubNameEditorForm({
                         <Select
                           value={detail.type}
                           onValueChange={(value) =>
-                            handleDetailChange(detail.id, "type", value)
+                            handleDetailChange(detail.id, 'type', value)
                           }
                         >
                           <SelectTrigger id={`detail-type-${detail.id}`}>
@@ -229,12 +232,12 @@ export function ClubNameEditorForm({
                           className="bg-muted text-md md:text-sm"
                           type="text"
                           placeholder="Field Name"
-                          value={detail.name || ""}
+                          value={detail.name || ''}
                           onChange={(e) =>
                             handleDetailChange(
                               detail.id,
-                              "name",
-                              e.target.value
+                              'name',
+                              e.target.value,
                             )
                           }
                           autoFocus
@@ -255,16 +258,16 @@ export function ClubNameEditorForm({
                         name={`detail-value-${index}`}
                         className="bg-muted text-md md:text-sm"
                         type={
-                          detail.type === "email"
-                            ? "email"
-                            : detail.type === "password"
-                            ? "password"
-                            : "text"
+                          detail.type === 'email'
+                            ? 'email'
+                            : detail.type === 'password'
+                              ? 'password'
+                              : 'text'
                         }
                         placeholder="Value"
                         value={detail.value}
                         onChange={(e) =>
-                          handleDetailChange(detail.id, "value", e.target.value)
+                          handleDetailChange(detail.id, 'value', e.target.value)
                         }
                         required
                       />
@@ -296,24 +299,24 @@ export function ClubNameEditorForm({
               </div>
 
               {/* Display Action State Messages */}
-              {updateState.status === "failed" && (
+              {updateState.status === 'failed' && (
                 <p className="text-sm text-red-500">{updateState.message}</p>
               )}
-              {updateState.status === "invalid_data" && (
+              {updateState.status === 'invalid_data' && (
                 <p className="text-sm text-red-500">
-                  {updateState.message || "Invalid data provided."}
+                  {updateState.message || 'Invalid data provided.'}
                 </p>
               )}
-              {updateState.status === "unauthorized" && (
+              {updateState.status === 'unauthorized' && (
                 <p className="text-sm text-red-500">
-                  {updateState.message || "You are not authorized."}
+                  {updateState.message || 'You are not authorized.'}
                 </p>
               )}
             </CardContent>
             <CardFooter>
               <SubmitButton
                 className="mt-6 w-full"
-                isSuccessful={updateState.status === "success"}
+                isSuccessful={updateState.status === 'success'}
               >
                 Save Changes
               </SubmitButton>

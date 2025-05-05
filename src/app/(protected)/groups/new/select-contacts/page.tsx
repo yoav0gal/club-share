@@ -1,6 +1,6 @@
-import { auth } from "@/app/(auth)/auth";
-import { getContactsForSharing } from "@/lib/db/queries/contacts";
-import { ContactSelector } from "./contact-selector";
+import { auth } from '@/app/(auth)/auth';
+import { getContactsForSharing } from '@/lib/db/queries/contacts';
+import { ContactSelector } from './contact-selector';
 
 export default async function SelectContactsPage() {
   const session = await auth();

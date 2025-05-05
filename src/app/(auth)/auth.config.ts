@@ -10,6 +10,7 @@ export const authConfig = {
     newUser: '/register',
   },
   adapter: DrizzleAdapter(db, {
+    // @ts-expect-error - Changed primary key to email
     usersTable: users,
     accountsTable: accounts,
   }),

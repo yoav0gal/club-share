@@ -6,6 +6,7 @@ import type { ContactWithChecked } from './group-editor';
 
 export default async function SelectContactsPage({ params }: GroupPageProps) {
   const session = await auth();
+  const { id } = await params;
   const userEmail = session?.user?.email;
 
   if (!userEmail) {
@@ -16,7 +17,7 @@ export default async function SelectContactsPage({ params }: GroupPageProps) {
     );
   }
 
-  const groupEditData = await groupEditDataAction(params.id);
+  const groupEditData = await groupEditDataAction(id);
 
   return (
     <GroupEditor contacts={groupEditData?.contacts as ContactWithChecked[]} />
