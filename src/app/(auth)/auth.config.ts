@@ -22,8 +22,9 @@ export const authConfig = {
       const isOnLogin = nextUrl.pathname.startsWith('/login');
       const isOnPrivacy = nextUrl.pathname.startsWith('/privacy');
       const isOnTerms = nextUrl.pathname.startsWith('/terms');
+      const isOnLanding = nextUrl.pathname === '' || nextUrl.pathname === '/';
 
-      if (isOnPrivacy || isOnTerms) return true;
+      if (isOnPrivacy || isOnTerms || isOnLanding) return true;
 
       if (!isLoggedIn && !(isOnLogin || isOnRegister)) {
         return Response.redirect(new URL('/login', nextUrl as unknown as URL));

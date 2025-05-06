@@ -160,33 +160,17 @@ export async function getAllGroupsForUser(
       .from(groupOwners)
       .where(eq(groupOwners.userEmail, userEmail));
 
-    const memberGroupsQuery = db
-      .select({ id: groupMembers.groupId })
-      .from(groupMembers)
-      .where(eq(groupMembers.userEmail, userEmail));
+    const [ownedGroups] = await Promise.all([ownedGroupsQuery]);
 
-    const [ownedGroups, memberGroups] = await Promise.all([
-      ownedGroupsQuery,
-      memberGroupsQuery,
-    ]);
+    const groupIds = [...new Set([...ownedGroups.map((g) => g.id)])];
 
-    const groupIds = [
-      ...new Set([
-        ...ownedGroups.map((g) => g.id),
-        ...memberGroups.map((g) => g.id),
-      ]),
-    ];
-
-    if (groupIds.length === 0) {
-      return [];
-    }
+    if (groupIds.length === 0) return [];
 
     const userGroups = await db
       .select()
       .from(groups)
       .where(inArray(groups.id, groupIds));
 
-    // Fetch members for each group
     const groupsWithMembers = await Promise.all(
       userGroups.map(async (group) => {
         const members = await db
